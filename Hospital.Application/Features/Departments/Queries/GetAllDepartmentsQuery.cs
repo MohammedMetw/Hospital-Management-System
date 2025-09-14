@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Hospital.Application.DTOs
+namespace Hospital.Application.Features.Departments.Queries
 {
-    internal class Class1
+    internal class GetAllDepartmentsQuery
     {
     }
 }

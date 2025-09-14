@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Hospital.Infrastructure.Persistence
 {
-    internal class Class1
+    internal class DBContext
     {
     }
 }
