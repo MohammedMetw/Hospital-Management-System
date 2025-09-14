@@ -21,8 +21,15 @@ namespace Hospital.Application.Features.Departments.Command
         {
             var department = await _unitOfWork.Departments.GetByIdAsync(request.Id);
             if (department == null)
-                return null;
-             await _unitOfWork.Departments.DeleteAsync(department);
+            {
+                throw new Exception("Department not found");
+            }
+
+            await _unitOfWork.Departments.DeleteAsync(department);
+
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
+
+
             return new DepartmentDto
             {
                 Id = department.Id,

@@ -25,6 +25,8 @@ namespace Hospital.Application.Features.Departments.Command
 
             await _unitOfWork.Departments.AddAsync(department);
 
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
+
             return new DepartmentDto
             {
                 Id = department.Id,
