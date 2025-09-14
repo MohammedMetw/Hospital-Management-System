@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 namespace Hospital.Application.DTOs
 {
-    internal class DepartmentDto
+    public  class DepartmentDto
     {
+        public int Id { get; set; }
+        public required string Name { get; set; }
     }
 }
