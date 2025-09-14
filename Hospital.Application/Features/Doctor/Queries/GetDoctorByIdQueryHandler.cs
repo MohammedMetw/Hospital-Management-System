@@ -12,16 +12,16 @@ namespace Hospital.Application.Features.Doctor.Queries
 {
     public class GetDoctorByIdQueryHandler : IRequestHandler<GetDoctorByIdQuery, DoctorDto>
     {
-        private readonly IDoctorRepository _doctorRepository;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public GetDoctorByIdQueryHandler(IDoctorRepository doctorRepository)
+        public GetDoctorByIdQueryHandler(IUnitOfWork unitOfWork)
         {
-            _doctorRepository = doctorRepository;
+            _unitOfWork = unitOfWork;
         }
 
           public async Task<DoctorDto> Handle(GetDoctorByIdQuery request, CancellationToken cancellationToken)
         {
-            var doctor = await _doctorRepository.GetByIdAsync(request.Id);
+            var doctor = await _unitOfWork.Doctors.GetByIdAsync(request.Id);
 
             if (doctor == null) 
             {

@@ -8,16 +8,16 @@ namespace Hospital.Application.Features.Departments.Queries
 {
     public class GetDepartmentByIDQueryHandler : IRequestHandler<GetDepartmentByIDQuery, DepartmentDto>
     {
-        private readonly IDepartmentRepository _departmentRepository;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public GetDepartmentByIDQueryHandler(IDepartmentRepository departmentRepository)
+        public GetDepartmentByIDQueryHandler(IUnitOfWork unitOfWork)
         {
-            _departmentRepository = departmentRepository;
+            _unitOfWork = unitOfWork;
         }
 
         public async Task<DepartmentDto> Handle(GetDepartmentByIDQuery request, CancellationToken cancellationToken)
         {
-            var department = await _departmentRepository.GetByIdAsync(request.Id);
+            var department = await _unitOfWork.Departments.GetByIdAsync(request.Id);
 
             if (department == null)
                 return null; 

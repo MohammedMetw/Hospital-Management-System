@@ -11,17 +11,17 @@ namespace Hospital.Application.Features.Departments.Queries
 {
     public class GetAllDepartmentsQueryHandler : IRequestHandler<GetAllDepartmentsQuery, IEnumerable<DepartmentDto>>
     {
-        private readonly IDepartmentRepository _departmentRepository;
+        private readonly IUnitOfWork _unitOfWork;
         
-        public GetAllDepartmentsQueryHandler(IDepartmentRepository departmentRepository)
+        public GetAllDepartmentsQueryHandler(IUnitOfWork unitOfWork)
         {
-            _departmentRepository = departmentRepository;
+            _unitOfWork= unitOfWork;
         }
 
         public async Task<IEnumerable<DepartmentDto>> Handle(GetAllDepartmentsQuery request, CancellationToken cancellationToken)
         {
             
-            var departments = await _departmentRepository.GetAllAsync();
+            var departments = await _unitOfWork.Departments.GetAllAsync();
 
             //var departmentDtos = _mapper.Map<IEnumerable<DepartmentDto>>(departments); for future 
             var departmentDtos = departments.Select(dept => new DepartmentDto
