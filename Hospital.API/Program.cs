@@ -1,4 +1,9 @@
 
+using Hospital.Application.Interfaces;
+using Hospital.Infrastructure.Persistence;
+using Hospital.Infrastructure.Repositories;
+using Microsoft.EntityFrameworkCore;
+
 namespace Hospital.API
 {
     public class Program
@@ -13,6 +18,17 @@ namespace Hospital.API
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+
+            var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+            builder.Services.AddDbContext<AppDbContext>(options =>
+                options.UseSqlServer(connectionString));
+
+
+
+            builder.Services.AddScoped<IDoctorRepository, DoctorRepository>();
+
+
+            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             var app = builder.Build();
 
