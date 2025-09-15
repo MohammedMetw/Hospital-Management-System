@@ -39,7 +39,7 @@ namespace Hospital.Application.Features.Doctor.Command
                 throw new InvalidOperationException("Failed to create user. " + string.Join(", ", identityResult.Errors.Select(e => e.Description)));
             }
 
-           
+           // assign Doctor Role ;)
             await _userManager.AddToRoleAsync(newUser, "Doctor");
 
            
@@ -49,8 +49,8 @@ namespace Hospital.Application.Features.Doctor.Command
                 Phone = request.Phone,
                 Email = request.Email,
                 DepartmentId = request.DepartmentId,
-                ApplicationUserId = newUser.Id,
-                ApplicationUser = newUser 
+                ApplicationUserId = newUser.Id
+               
             };
 
            

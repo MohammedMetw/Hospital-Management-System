@@ -21,7 +21,7 @@ namespace Hospital.Domain.Entities
         // 1. Foreign Key property. the ID of the user.
         // [ForeignKey("ApplicationUser")]
         public required string ApplicationUserId { get; set; }
-        public required ApplicationUser ApplicationUser { get; set; }
+        public  ApplicationUser ApplicationUser { get; set; }
 
 
 

@@ -19,7 +19,6 @@ namespace Hospital.Infrastructure.Persistence
                 var roleExist = await roleManager.RoleExistsAsync(roleName);
                 if (!roleExist)
                 {
-                   
                     await roleManager.CreateAsync(new IdentityRole(roleName));
                 }
             }

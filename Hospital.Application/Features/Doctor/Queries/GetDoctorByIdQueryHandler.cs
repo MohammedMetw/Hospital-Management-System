@@ -33,8 +33,8 @@ namespace Hospital.Application.Features.Doctor.Queries
                 Id = doctor.Id,
                 FullName = $"{doctor.ApplicationUser.FirstName} {doctor.ApplicationUser.LastName}",
                 Specialty = doctor.Specialty,
-                Email = doctor.ApplicationUser.Email,
-                Phone = doctor.ApplicationUser.PhoneNumber,
+                Email = doctor.Email,
+                Phone = doctor.Phone,
                 DepartmentId = doctor.DepartmentId
             };
 
