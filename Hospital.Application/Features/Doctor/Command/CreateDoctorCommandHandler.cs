@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Hospital.Application.Features.Departments.Queries;
 
 
 namespace Hospital.Application.Features.Doctor.Command
@@ -28,21 +29,9 @@ namespace Hospital.Application.Features.Doctor.Command
                 FirstName = request.FirstName,
                 LastName = request.LastName,
                 UserName = request.Email,
-                Email = request.Email
+                Email = request.Email,
+               PhoneNumber=request.Phone
             };
-
-            var identityResult = await _userManager.CreateAsync(newUser, request.Password);
-
-            if (!identityResult.Succeeded)
-            {
-               
-                throw new InvalidOperationException("Failed to create user. " + string.Join(", ", identityResult.Errors.Select(e => e.Description)));
-            }
-
-           // assign Doctor Role ;)
-            await _userManager.AddToRoleAsync(newUser, "Doctor");
-
-           
             var newDoctorProfile = new Domain.Entities.Doctor
             {
                 Specialty = request.Specialty,
@@ -52,14 +41,30 @@ namespace Hospital.Application.Features.Doctor.Command
                 ApplicationUserId = newUser.Id
                
             };
+            var department = await _unitOfWork.Departments.GetByIdAsync(request.DepartmentId);
+            if (department == null)
+            {
+                throw new Exception("the department not found ");
+            }
+            var identityResult = await _userManager.CreateAsync(newUser, request.Password);
 
-           
+            if (!identityResult.Succeeded)
+            {
+
+                throw new InvalidOperationException("Failed to create user. " + string.Join(", ", identityResult.Errors.Select(e => e.Description)));
+            }
+
+            // assign Doctor Role ;)
+            
+                await _userManager.AddToRoleAsync(newUser, "Doctor");
+
             await _unitOfWork.Doctors.AddAsync(newDoctorProfile);
 
           
             await _unitOfWork.SaveChangesAsync(cancellationToken);
 
             return newDoctorProfile.Id;
+
         }
     }
 }
