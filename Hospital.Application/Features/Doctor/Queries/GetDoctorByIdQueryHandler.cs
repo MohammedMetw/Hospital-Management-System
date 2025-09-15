@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Hospital.Application.DTOs;
+using Hospital.Application.Exceptions;
 using Hospital.Application.Features.Departments.Queries;
 using Hospital.Application.Interfaces;
 using MediatR;
@@ -25,7 +26,7 @@ namespace Hospital.Application.Features.Doctor.Queries
 
             if (doctor == null) 
             {
-                return null;
+                throw new Exception("Doctor not found");
             }
             return new DoctorDto
             {

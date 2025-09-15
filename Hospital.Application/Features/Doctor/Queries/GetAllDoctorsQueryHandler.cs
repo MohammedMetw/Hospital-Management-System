@@ -29,7 +29,7 @@ namespace Hospital.Application.Features.Doctor.Queries
                 Id = doc.Id,
                 FullName = $"{doc.ApplicationUser.FirstName} {doc.ApplicationUser.LastName}",
                 Email=doc.Email,
-                Phone=doc.Phone,
+                Phone=doc.ApplicationUser.PhoneNumber,
                 Specialty = doc.Specialty,
                 DepartmentId = doc.DepartmentId
 

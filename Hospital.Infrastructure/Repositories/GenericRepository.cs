@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Hospital.Application.Interfaces;
+﻿using Hospital.Application.Interfaces;
 using Hospital.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 
@@ -18,16 +13,9 @@ namespace Hospital.Infrastructure.Repositories
             _context = context;
         }
 
-        
-
         public async Task<T?> GetByIdAsync(int id)
         {
             return await _context.Set<T>().FindAsync(id);
-        }
-
-        public async Task AddAsync(T entity)
-        {
-            await _context.Set<T>().AddAsync(entity);
         }
 
         public async Task<IEnumerable<T>> GetAllAsync()
@@ -35,14 +23,26 @@ namespace Hospital.Infrastructure.Repositories
             return await _context.Set<T>().ToListAsync();
         }
 
-        public void Update(T entity)
+        public async Task AddAsync(T entity)
         {
-            _context.Set<T>().Update(entity);
+            await _context.Set<T>().AddAsync(entity);
         }
 
-        public void Delete(T entity)
+        public Task UpdateAsync(T entity)
+        {
+            _context.Set<T>().Update(entity);
+            return Task.CompletedTask;
+        }
+
+        public Task DeleteAsync(T entity)
         {
             _context.Set<T>().Remove(entity);
+            return Task.CompletedTask;
+        }
+
+        public async Task<int> SaveChangesAsync()
+        {
+            return await _context.SaveChangesAsync();
         }
     }
 }

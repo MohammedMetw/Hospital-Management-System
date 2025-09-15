@@ -24,5 +24,13 @@ namespace Hospital.Infrastructure.Repositories
                                  .Include(d => d.Department)
                                  .ToListAsync();
         }
+        public new async Task<Doctor?> GetByIdAsync(int id)
+        {
+            return await _context.Doctors
+                                 .Include(d => d.ApplicationUser)
+                                 .Include(d => d.Department)
+                                 .FirstOrDefaultAsync(d => d.Id == id);
+        }
+
     }
 }

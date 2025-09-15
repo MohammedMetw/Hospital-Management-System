@@ -1,4 +1,5 @@
 ﻿using Hospital.Application.DTOs;
+using Hospital.Application.Exceptions;
 using Hospital.Application.Interfaces;
 using Hospital.Domain.Entities;
 using MediatR;
@@ -24,7 +25,7 @@ namespace Hospital.Application.Features.Doctor.Command
             var doctor = await _unitOfWork.Doctors.GetByIdAsync(request.Id);
             if (doctor == null)
             {
-                throw new Exception("Doctor not found");
+                throw new NotFoundException("Doctor not found");
             }
             await _unitOfWork.Doctors.DeleteAsync(doctor);
 

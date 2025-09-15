@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Hospital.Application.DTOs;
+using Hospital.Application.Exceptions;
 using Hospital.Application.Interfaces;
 using MediatR;
 
@@ -23,7 +24,7 @@ namespace Hospital.Application.Features.Doctor.Command
             var doctor = await _unitOfWork.Doctors.GetByIdAsync(request.Id);
             if (doctor == null)
             {
-                throw new Exception("Doctor not found");
+                throw new NotFoundException("Doctor not found");
             }
 
             doctor.ApplicationUser.FirstName = request.FirstName;
