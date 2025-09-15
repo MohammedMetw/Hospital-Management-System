@@ -54,7 +54,7 @@ namespace Hospital.API.Controllers
         [HttpGet("GetAllDoctorsInSpecificDepartment/{departmentId}")]
         public async Task<IActionResult> GetAllDoctorsInSpecificDepartment(int departmentId)
         {
-            var doctors = await _mediator.Send(new GetAllDoctorsInSpecificDepartmentCommand(departmentId));
+            var doctors = await _mediator.Send(new GetAllDoctorsInSpecificDepartmentQuery(departmentId));
             return Ok(doctors);
         }
     }
