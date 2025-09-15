@@ -10,12 +10,22 @@ using System.Threading.Tasks;
 
 namespace Hospital.Infrastructure.Repositories
 {
-   public class DepartmentRepository:GenericRepository<Department>,IDepartmentRepository
+    public class DepartmentRepository : GenericRepository<Department>, IDepartmentRepository
     {
-        public DepartmentRepository(AppDbContext context):base(context)
+
+        public DepartmentRepository(AppDbContext context) : base(context)
         {
 
-            
+        }
+     
+        Task<List<Doctor>> IDepartmentRepository.GetAllDoctorsInSpecificDepartment(int departmentId)
+        {
+            var doctors = _context.Doctors
+              .Include(d => d.ApplicationUser)
+              .Where(d => d.DepartmentId == departmentId)
+              .ToListAsync();
+            return doctors;
         }
     }
 }
+

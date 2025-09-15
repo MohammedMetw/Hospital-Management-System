@@ -7,8 +7,10 @@ using Hospital.Domain.Entities;
 
 namespace Hospital.Application.Interfaces
 {
-    public interface IDepartmentRepository: IGenericRepository<Department>
+    public interface IDepartmentRepository : IGenericRepository<Department>
     {
-        
+
+        Task<List<Doctor>> GetAllDoctorsInSpecificDepartment(int departmentId);
+
     }
 }
