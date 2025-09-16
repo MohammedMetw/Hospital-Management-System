@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 
 namespace Hospital.Application.Features.Departments.Queries
 {
@@ -25,8 +26,10 @@ namespace Hospital.Application.Features.Departments.Queries
             return doctors.Select(d => new DoctorDto
             {
                 Id = d.Id,
-                FullName =$"{d.ApplicationUser.FirstName } {d.ApplicationUser.LastName}" ,
+                FullName = $"{d.ApplicationUser.FirstName} {d.ApplicationUser.LastName}",
                 Specialty = d.Specialty,
+                Email = d.ApplicationUser.Email,
+                Phone = d.ApplicationUser.PhoneNumber,
                 DepartmentId = d.DepartmentId
             }).ToList();
         }
