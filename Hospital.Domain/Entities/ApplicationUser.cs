@@ -15,5 +15,6 @@ namespace Hospital.Domain.Entities
         public Doctor? DoctorProfile { get; set; }
         public virtual Patient? PatientProfile { get; set; }
         public virtual Nurse? NurseProfile { get; set; }
+        public virtual Pharmacist? PharmacistProfile { get; set; }
     }
 }

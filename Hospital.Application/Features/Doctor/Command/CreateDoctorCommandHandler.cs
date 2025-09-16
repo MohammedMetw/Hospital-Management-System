@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Hospital.Application.Features.Departments.Queries;
+using Hospital.Application.Exceptions;
 
 
 namespace Hospital.Application.Features.Doctor.Command
@@ -44,7 +45,7 @@ namespace Hospital.Application.Features.Doctor.Command
             var department = await _unitOfWork.Departments.GetByIdAsync(request.DepartmentId);
             if (department == null)
             {
-                throw new Exception("the department not found ");
+                throw new NotFoundException("the department not found ");
             }
             var identityResult = await _userManager.CreateAsync(newUser, request.Password);
 
@@ -56,7 +57,7 @@ namespace Hospital.Application.Features.Doctor.Command
 
             // assign Doctor Role ;)
             
-                await _userManager.AddToRoleAsync(newUser, "Doctor");
+            await _userManager.AddToRoleAsync(newUser, "Doctor");
 
             await _unitOfWork.Doctors.AddAsync(newDoctorProfile);
 

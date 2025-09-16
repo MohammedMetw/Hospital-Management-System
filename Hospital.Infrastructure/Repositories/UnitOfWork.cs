@@ -17,13 +17,17 @@ namespace Hospital.Infrastructure.Repositories
         public IDepartmentRepository Departments { get; private set; }
         public INurseRepository Nurses { get; private set; }
 
+        public IPharmacistRepository Pharmacists { get; private set; }
+
         
 
         public UnitOfWork(
         AppDbContext context,
         IDoctorRepository doctorRepository,
         IPatientRepository patientRepository,
-        IDepartmentRepository departmentRepository,INurseRepository nurseRepository)
+        IDepartmentRepository departmentRepository,
+        INurseRepository nurseRepository,
+        IPharmacistRepository pharmacistRepository)
         {
             _context = context;
 
@@ -32,6 +36,7 @@ namespace Hospital.Infrastructure.Repositories
             Patients = patientRepository;
             Departments = departmentRepository;
             Nurses = nurseRepository;
+            Pharmacists = pharmacistRepository;
         }
         
 
