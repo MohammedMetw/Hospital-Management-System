@@ -42,6 +42,7 @@ namespace Hospital.Application.Features.Pharmacist.Command
                
                 Email = request.Email,
                 Phone = request.Phone,
+                Shift = request.Shift,
                 ApplicationUserId = user.Id
 
             };

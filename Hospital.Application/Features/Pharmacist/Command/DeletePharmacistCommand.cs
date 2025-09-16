@@ -9,6 +9,6 @@ namespace Hospital.Application.Features.Pharmacist.Command
 {
     public class DeletePharmacistCommand:IRequest<Unit>
     {
-        public int id { get; set; }
+        public int Id { get; set; }
     }
 }

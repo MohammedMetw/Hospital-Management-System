@@ -10,6 +10,6 @@ namespace Hospital.Application.Features.Pharmacist.Queries
 {
     public class GetPharmacistByIdQuery : IRequest<PharmacistDto>
     {
-        public int id { get; set ; }
+        public int Id { get; set ; }
     }
 }

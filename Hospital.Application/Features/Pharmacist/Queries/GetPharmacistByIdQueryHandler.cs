@@ -20,7 +20,7 @@ namespace Hospital.Application.Features.Pharmacist.Queries
 
         public async Task<PharmacistDto> Handle(GetPharmacistByIdQuery request, CancellationToken cancellationToken)
         {
-            var pharmacists = await _unitOfWork.Pharmacists.GetByIdAsync(request.id);
+            var pharmacists = await _unitOfWork.Pharmacists.GetByIdAsync(request.Id);
 
             if (pharmacists == null)
             {

@@ -19,7 +19,7 @@ namespace Hospital.Application.Features.Pharmacist.Command
 
         public async Task<Unit> Handle(DeletePharmacistCommand request, CancellationToken cancellationToken)
         {
-            var pharmacist = await _unitOfWork.Pharmacists.GetByIdAsync(request.id);
+            var pharmacist = await _unitOfWork.Pharmacists.GetByIdAsync(request.Id);
             if (pharmacist == null)
             {
                 throw new Exception("Pharmacist not found");
