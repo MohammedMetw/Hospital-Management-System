@@ -31,5 +31,11 @@ namespace Hospital.Infrastructure.Repositories
                 Include(p => p.ApplicationUser).
                 FirstOrDefaultAsync(p => p.Id == id);
         }
+
+        
+        public async Task<Pharmacist?> GetByUserIdAsync(string userId)
+        {
+            return await _context.pharmacists.FirstOrDefaultAsync(d => d.ApplicationUserId == userId);
+        }
     }
 }

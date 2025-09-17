@@ -15,5 +15,10 @@ namespace Hospital.Infrastructure.Repositories
         public Task<Patient?> GetByIdAsync(int id) => throw new NotImplementedException();
         public Task<Patient?> GetPatientByName(string name) => throw new NotImplementedException();
         public Task UpdateAsync(Patient entity) => throw new NotImplementedException();
+        
+        Task<int> IGenericRepository<Patient>.CountAsync()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

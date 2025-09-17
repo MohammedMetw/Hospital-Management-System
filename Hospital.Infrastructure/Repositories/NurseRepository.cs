@@ -30,5 +30,10 @@ namespace Hospital.Infrastructure.Repositories
                                  .Include(n => n.Department)
                                  .FirstOrDefaultAsync(n => n.Id == id);
         }
+
+        public async Task<Nurse?> GetByUserIdAsync(string userId)
+        {
+            return await _context.Nurses.FirstOrDefaultAsync(n => n.ApplicationUser.Id == userId);
+        }
     }
 }

@@ -9,6 +9,6 @@ namespace Hospital.Application.Interfaces
 {
     public interface IDoctorRepository : IGenericRepository<Doctor>
     {
-       
+        Task<Doctor?> GetByUserIdAsync(string userId);
     }
 }

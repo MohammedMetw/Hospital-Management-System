@@ -14,5 +14,7 @@ namespace Hospital.Application.DTOs
         public string Phone { get; set; }
         public string Email { get; set; }
         public IList<string> Roles { get; set; }
+
+        public bool LockedOut { get; set; }
     }
 }

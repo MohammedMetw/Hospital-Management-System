@@ -33,7 +33,8 @@ public class GetAllUsersQueryHandler : IRequestHandler<GetAllUsersQuery, IEnumer
                 LastName = user.LastName,
                 Phone = user.PhoneNumber,
                 Email = user.Email,
-                Roles = await _userManager.GetRolesAsync(user)
+                Roles = await _userManager.GetRolesAsync(user),
+                LockedOut = user.LockoutEnd.HasValue && user.LockoutEnd.Value > DateTime.UtcNow
             });
         }
 

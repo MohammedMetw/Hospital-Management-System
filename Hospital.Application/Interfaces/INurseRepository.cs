@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace Hospital.Application.Interfaces
 {
    public interface INurseRepository:IGenericRepository<Nurse>
-    { 
-
+    {
+        Task<Nurse?> GetByUserIdAsync(string userId);
     }
 }

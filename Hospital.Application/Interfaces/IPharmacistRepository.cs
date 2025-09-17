@@ -9,5 +9,6 @@ namespace Hospital.Application.Interfaces
 {
     public interface IPharmacistRepository : IGenericRepository<Pharmacist>
     {
+        Task<Pharmacist?> GetByUserIdAsync(string userId);
     }
 }

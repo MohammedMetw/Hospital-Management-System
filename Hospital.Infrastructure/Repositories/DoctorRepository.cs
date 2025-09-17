@@ -32,5 +32,10 @@ namespace Hospital.Infrastructure.Repositories
                                  .FirstOrDefaultAsync(d => d.Id == id);
         }
 
+        public async Task<Doctor?> GetByUserIdAsync(string userId)
+        {
+            return await _context.Doctors.FirstOrDefaultAsync(d => d.ApplicationUserId == userId);
+        }
+
     }
 }

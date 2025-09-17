@@ -40,6 +40,12 @@ namespace Hospital.Infrastructure.Repositories
             return Task.CompletedTask;
         }
 
+
+        public Task<int> CountAsync()
+        {
+            return _context.Set<T>().CountAsync();
+        }
+
         public async Task<int> SaveChangesAsync()
         {
             return await _context.SaveChangesAsync();
