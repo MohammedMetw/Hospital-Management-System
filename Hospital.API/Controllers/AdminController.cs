@@ -9,11 +9,11 @@ namespace Hospital.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UserController : ControllerBase
+    public class AdminController : ControllerBase
     {
         private readonly IMediator _mediator;
 
-        public UserController(IMediator mediator)
+        public AdminController(IMediator mediator)
         {
             _mediator = mediator;
         }
@@ -27,7 +27,7 @@ namespace Hospital.API.Controllers
             return Ok(users);
         }
 
-        [HttpDelete("user/{userId}")]
+        [HttpDelete("HardDeleteUser/{userId}")]
         public async Task<IActionResult> HardDeleteUser(string userId)
         {
             var command = new HardDeleteUserCommand { UserId = userId };

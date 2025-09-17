@@ -7,15 +7,18 @@ using Hospital.Application.Interfaces;
 using Hospital.Domain.Entities;
 using Hospital.Application.DTOs;
 using MediatR;
+using Microsoft.AspNetCore.Identity;
 
 namespace Hospital.Application.Features.Nurse.Command
 {
   public  class DeleteNurseCommandHandler : IRequestHandler<DeleteNurseCommand,NurseDto>
     {
         private readonly IUnitOfWork _unitOfWork;
-        public DeleteNurseCommandHandler(IUnitOfWork unitOfWork)
+        private readonly UserManager<ApplicationUser> _userManager;
+        public DeleteNurseCommandHandler(IUnitOfWork unitOfWork, UserManager<ApplicationUser> userManager)
         {
             _unitOfWork = unitOfWork;
+            _userManager = userManager;
         }
         public async Task<NurseDto> Handle(DeleteNurseCommand request, CancellationToken cancellationToken)
         {
@@ -25,6 +28,7 @@ namespace Hospital.Application.Features.Nurse.Command
                 throw new Exception("Nurse not found");
             }
            await _unitOfWork.Nurses.DeleteAsync(nurse);
+            await _userManager.RemoveFromRoleAsync(nurse.ApplicationUser, "Nurse");
             await _unitOfWork.SaveChangesAsync(cancellationToken);
 
             return new NurseDto

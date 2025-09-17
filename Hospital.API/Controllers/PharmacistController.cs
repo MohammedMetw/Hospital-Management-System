@@ -54,7 +54,7 @@ namespace Hospital.API.Controllers
          public async Task<IActionResult> DeletePharmacist(int id)
         {
             var DeletePharmacist = await _mediator.Send(new DeletePharmacistCommand { Id = id });
-            return Ok($"Pharmacist '{DeletePharmacist}' was deleted successfully.");
+            return NoContent();
         }
 
     }

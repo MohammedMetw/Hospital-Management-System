@@ -4,6 +4,7 @@ using Hospital.Application.Interfaces;
 using Hospital.Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,9 +16,11 @@ namespace Hospital.Application.Features.Doctor.Command
     public class DeleteDoctorCommandHandler : IRequestHandler<DeleteDoctorCommand, DoctorDto>
     {
         private readonly IUnitOfWork _unitOfWork;
-        public DeleteDoctorCommandHandler(IUnitOfWork unitOfWork)
+        private readonly UserManager<ApplicationUser> _userManager;
+        public DeleteDoctorCommandHandler(IUnitOfWork unitOfWork , UserManager<ApplicationUser> userManager)
         {
             _unitOfWork = unitOfWork;
+            _userManager = userManager;
         }
 
         public async Task<DoctorDto> Handle(DeleteDoctorCommand request, CancellationToken cancellationToken)
@@ -28,7 +31,7 @@ namespace Hospital.Application.Features.Doctor.Command
                 throw new NotFoundException("Doctor not found");
             }
             await _unitOfWork.Doctors.DeleteAsync(doctor);
-
+            await _userManager.RemoveFromRoleAsync(doctor.ApplicationUser, "Doctor");
             await _unitOfWork.SaveChangesAsync(cancellationToken);
 
             return new DoctorDto

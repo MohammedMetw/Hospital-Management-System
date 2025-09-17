@@ -31,6 +31,7 @@ namespace Hospital.Application.Features.Pharmacist.Queries
             return new PharmacistDto
             {
                 Id = pharmacists.Id,
+                FullName = $"{pharmacists.ApplicationUser.FirstName} {pharmacists.ApplicationUser.LastName}",
                 Phone = pharmacists.Phone,
                 Shift = pharmacists.Shift,
                 Email = pharmacists.Email
