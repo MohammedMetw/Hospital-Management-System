@@ -28,7 +28,7 @@ namespace Hospital.Application.Features.Nurse.Command
                 LastName = request.LastName,
                 Email = request.Email,
                 PhoneNumber=request.PhoneNumber,
-                UserName = request.Email // ضروري للـ Identity
+                UserName = request.Email 
             };
             var nurse = new Domain.Entities.Nurse
             {

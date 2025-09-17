@@ -7,9 +7,9 @@ using FluentValidation;
 
 namespace Hospital.Application.Features.Departments.Command
 {
-  public  class UpdateDepartmentValidatorCommand : AbstractValidator<UpdateDepartmentCommand>
+  public  class UpdateDepartmentCommandValidator : AbstractValidator<UpdateDepartmentCommand>
     {
-        public UpdateDepartmentValidatorCommand() 
+        public UpdateDepartmentCommandValidator() 
         {
             RuleFor(x => x.Name)
                 .NotEmpty().WithMessage("Department name is required.")

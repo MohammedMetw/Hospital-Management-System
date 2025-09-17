@@ -12,7 +12,7 @@ namespace Hospital.Infrastructure.Persistence
         {
             var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
 
-            string[] roleNames = { "Admin", "Doctor", "Patient","Nurse", "Pharmacist" };
+            string[] roleNames = { "Admin", "Doctor", "Patient","Nurse", "Pharmacist","Accountant" };
 
             foreach (var roleName in roleNames)
             {

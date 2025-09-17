@@ -18,8 +18,9 @@ namespace Hospital.Infrastructure.Repositories
         public INurseRepository Nurses { get; private set; }
 
         public IPharmacistRepository Pharmacists { get; private set; }
+        public IAccountantRepository Accountants { get; private set; }
 
-        
+
 
         public UnitOfWork(
         AppDbContext context,
@@ -27,18 +28,20 @@ namespace Hospital.Infrastructure.Repositories
         IPatientRepository patientRepository,
         IDepartmentRepository departmentRepository,
         INurseRepository nurseRepository,
-        IPharmacistRepository pharmacistRepository)
+        IPharmacistRepository pharmacistRepository,
+        IAccountantRepository accountantRepository)
         {
             _context = context;
 
-          
+
             Doctors = doctorRepository;
             Patients = patientRepository;
             Departments = departmentRepository;
             Nurses = nurseRepository;
             Pharmacists = pharmacistRepository;
+            Accountants = accountantRepository;
         }
-        
+
 
 
         public Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)

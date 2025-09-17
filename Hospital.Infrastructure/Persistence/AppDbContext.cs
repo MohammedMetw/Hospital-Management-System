@@ -17,6 +17,7 @@ namespace Hospital.Infrastructure.Persistence
         public DbSet<Department> Departments { get; set; }
         public DbSet<Nurse> Nurses { get; set; }
         public DbSet<Pharmacist>  pharmacists { get; set; }
+        public DbSet<Accountant> Accountants { get; set; }
 
 
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
@@ -53,6 +54,11 @@ namespace Hospital.Infrastructure.Persistence
                 HasOne(u => u.PharmacistProfile).
                 WithOne(p => p.ApplicationUser)
                 .HasForeignKey<Pharmacist>(p => p.ApplicationUserId);
+            // One-to-One: ApplicationUser <-> Accountant
+            builder.Entity<ApplicationUser>()
+                .HasOne(u => u.AccountantProfile)
+                .WithOne(a => a.ApplicationUser)
+                .HasForeignKey<Accountant>(a => a.ApplicationUserId);
 
 
 

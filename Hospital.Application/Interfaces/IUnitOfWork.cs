@@ -13,7 +13,8 @@ namespace Hospital.Application.Interfaces
         IDepartmentRepository Departments { get; }
         INurseRepository Nurses { get; }
         IPharmacistRepository Pharmacists { get; }
-        
+        IAccountantRepository Accountants { get; }
+
 
         Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
     }
