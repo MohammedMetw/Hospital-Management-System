@@ -30,6 +30,7 @@ namespace Hospital.Application.Features.Doctor.Command
             doctor.ApplicationUser.FirstName = request.FirstName;
             doctor.ApplicationUser.LastName = request.LastName;
             doctor.ApplicationUser.PhoneNumber = request.Phone;
+           // doctor.ApplicationUser.Email = request.Email;
             doctor.Specialty = request.Specialty;
             doctor.DepartmentId = request.DepartmentId;
 

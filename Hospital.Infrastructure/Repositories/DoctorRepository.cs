@@ -19,14 +19,14 @@ namespace Hospital.Infrastructure.Repositories
         // for include
         public new async Task<IEnumerable<Doctor>> GetAllAsync()
         {
-            return await _context.Doctors
+            return await _context.Patient
                                  .Include(d => d.ApplicationUser)
                                  .Include(d => d.Department)
                                  .ToListAsync();
         }
         public new async Task<Doctor?> GetByIdAsync(int id)
         {
-            return await _context.Doctors
+            return await _context.Patient
                                  .Include(d => d.ApplicationUser)
                                  .Include(d => d.Department)
                                  .FirstOrDefaultAsync(d => d.Id == id);
@@ -34,7 +34,7 @@ namespace Hospital.Infrastructure.Repositories
 
         public async Task<Doctor?> GetByUserIdAsync(string userId)
         {
-            return await _context.Doctors.FirstOrDefaultAsync(d => d.ApplicationUserId == userId);
+            return await _context.Patient.FirstOrDefaultAsync(d => d.ApplicationUserId == userId);
         }
 
     }

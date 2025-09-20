@@ -61,7 +61,6 @@ namespace Hospital.Application.Features.Doctor.Command
 
             await _unitOfWork.Doctors.AddAsync(newDoctorProfile);
 
-          
             await _unitOfWork.SaveChangesAsync(cancellationToken);
 
             return newDoctorProfile.Id;

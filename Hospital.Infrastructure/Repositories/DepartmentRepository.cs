@@ -20,7 +20,7 @@ namespace Hospital.Infrastructure.Repositories
      
         Task<List<Doctor>> IDepartmentRepository.GetAllDoctorsInSpecificDepartment(int departmentId)
         {
-            var doctors = _context.Doctors
+            var doctors = _context.Patient
               .Include(d => d.ApplicationUser)
               .Where(d => d.DepartmentId == departmentId)
               .ToListAsync();

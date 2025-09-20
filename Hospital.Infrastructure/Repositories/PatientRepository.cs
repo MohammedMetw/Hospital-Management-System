@@ -1,24 +1,39 @@
 ﻿using Hospital.Application.Interfaces;
 using Hospital.Domain.Entities;
 using Hospital.Infrastructure.Persistence;
+using Microsoft.EntityFrameworkCore;
 
 namespace Hospital.Infrastructure.Repositories
 {
-    public class PatientRepository : IPatientRepository
+    public class PatientRepository : GenericRepository<Patient>, IPatientRepository
     {
-      
-        public PatientRepository(AppDbContext context) { }
-
-        public Task AddAsync(Patient entity) => throw new NotImplementedException();
-        public Task DeleteAsync(Patient entity) => throw new NotImplementedException();
-        public Task<IEnumerable<Patient>> GetAllAsync() => throw new NotImplementedException();
-        public Task<Patient?> GetByIdAsync(int id) => throw new NotImplementedException();
-        public Task<Patient?> GetPatientByName(string name) => throw new NotImplementedException();
-        public Task UpdateAsync(Patient entity) => throw new NotImplementedException();
-        
-        Task<int> IGenericRepository<Patient>.CountAsync()
+        public PatientRepository(AppDbContext context) : base(context)
         {
-            throw new NotImplementedException();
+        }
+
+        public new async Task<IEnumerable<Patient>> GetAllAsync()
+        {
+            return await _context.Patients
+                .Include(p => p.ApplicationUser)
+                .ToListAsync();
+        }
+        public new async Task<Patient?> GetByIdAsync(int id)
+        {
+            return await _context.Patients
+                                 .Include(d => d.ApplicationUser)
+                                 .FirstOrDefaultAsync(d => d.Id == id);
+        }
+
+        public async Task<Patient?> GetByUserIdAsync(string userId)
+        {
+            return await _context.Patients.FirstOrDefaultAsync(d => d.ApplicationUserId == userId);
+        }
+
+        public async Task<Patient?> GetPatientByName(string name)
+        {
+            return await _context.Patients
+                .Include(p => p.ApplicationUser)
+                .FirstOrDefaultAsync(p => (p.ApplicationUser.FirstName + " " + p.ApplicationUser.LastName) == name);
         }
     }
 }

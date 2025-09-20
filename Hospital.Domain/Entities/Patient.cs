@@ -15,11 +15,13 @@ namespace Hospital.Domain.Entities
         public required string Phone { get; set; }
         public required string Email { get; set; }
 
+        public required string Gender { get; set; } 
+
 
 
         // 1. Foreign Key property. the ID of the user.
         // [ForeignKey("ApplicationUser")]
         public  required string ApplicationUserId { get; set; }
-        public required ApplicationUser ApplicationUser { get; set; }
+        public  ApplicationUser ApplicationUser { get; set; }
     }
 }
