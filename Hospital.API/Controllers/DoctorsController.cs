@@ -1,10 +1,12 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Hospital.Application.Features.Doctor.Queries; 
-using Hospital.Application.Features.Doctor.Command; 
+using Hospital.Application.Features.Doctor.Command;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Hospital.API.Controllers
 {
+    //[Authorize(Roles = "Admin")]
     [Route("api/[controller]")]
     [ApiController]
     public class DoctorsController : ControllerBase

@@ -3,11 +3,13 @@ using Hospital.Application.Features.Doctor.Queries;
 using Hospital.Application.Features.User.Command;
 using Hospital.Application.Features.User.Queries;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Hospital.API.Controllers
 {
+    //[Authorize("Admin")]
     [Route("api/[controller]")]
     [ApiController]
     public class AdminController : ControllerBase
