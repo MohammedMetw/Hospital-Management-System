@@ -43,6 +43,7 @@ namespace Hospital.API
             builder.Services.AddValidatorsFromAssembly(typeof(CreateDoctorCommandValidator).Assembly);
             builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
 
+            builder.Services.AddHttpContextAccessor();
             // --- Repositories and Services ---
             builder.Services.AddScoped<IDoctorRepository, DoctorRepository>();
             builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
@@ -50,7 +51,9 @@ namespace Hospital.API
             builder.Services.AddScoped<INurseRepository, NurseRepository>();
             builder.Services.AddScoped<IPharmacistRepository, PharmacistRepository>();
             builder.Services.AddScoped<IAccountantRepository, AccountantRepository>();
+            builder.Services.AddScoped<IAppointmentRepository, AppointmentRepository>();
             builder.Services.AddScoped<ITokenService, TokenService>();
+            builder.Services.AddScoped<IUserContextService, UserContextService>();
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             // --- JWT Authentication ---
@@ -81,8 +84,8 @@ namespace Hospital.API
                 swagger.SwaggerDoc("v1", new OpenApiInfo
                 {
                     Version = "v1",
-                    Title = "Educational Courses Platform API",
-                    Description = " Educational Courses Platform"
+                    Title = "Hospital Management System",
+                    Description = "API.Net"
                 });
 
                 swagger.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
@@ -123,9 +126,9 @@ namespace Hospital.API
                 app.UseSwagger();
                 app.UseSwaggerUI(c =>
                 {
-                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Educational Courses Platform API V1");
+                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Hospital Management System API v1");
                     c.RoutePrefix = "swagger"; // Swagger will be available at /swagger
-                    c.DocumentTitle = "Educational Courses Platform API";
+                    c.DocumentTitle = "API.Net";
                 });
             }
 

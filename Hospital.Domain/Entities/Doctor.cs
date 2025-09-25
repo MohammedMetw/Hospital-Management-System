@@ -28,5 +28,8 @@ namespace Hospital.Domain.Entities
         //  foreign key property for Department
         public int DepartmentId { get; set; }
         public virtual Department Department { get; set; }
+
+
+        public virtual ICollection<Appointment> Appointments { get; set; } = new List<Appointment>();
     }
 }

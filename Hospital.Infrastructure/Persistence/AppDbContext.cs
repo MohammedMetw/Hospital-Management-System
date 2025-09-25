@@ -19,6 +19,8 @@ namespace Hospital.Infrastructure.Persistence
         public DbSet<Pharmacist>  pharmacists { get; set; }
         public DbSet<Accountant> Accountants { get; set; }
 
+        public DbSet<Appointment> Appointments { get; set; }
+
 
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
@@ -29,7 +31,18 @@ namespace Hospital.Infrastructure.Persistence
             
             base.OnModelCreating(builder);
 
-            
+
+            builder.Entity<Appointment>()
+           .HasOne(a => a.doctor)
+           .WithMany(d => d.Appointments)
+           .HasForeignKey(a => a.DoctorId)
+           .OnDelete(DeleteBehavior.Restrict); 
+
+            builder.Entity<Appointment>()
+                .HasOne(a => a.patient)
+                .WithMany(p => p.Appointments)
+                .HasForeignKey(a => a.PatientId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             // One-to-One: ApplicationUser <-> Doctor
             builder.Entity<ApplicationUser>()

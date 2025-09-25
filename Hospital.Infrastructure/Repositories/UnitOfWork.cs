@@ -20,6 +20,8 @@ namespace Hospital.Infrastructure.Repositories
         public IPharmacistRepository Pharmacists { get; private set; }
         public IAccountantRepository Accountants { get; private set; }
 
+        public IAppointmentRepository Appointments { get; private set; }
+
 
 
         public UnitOfWork(
@@ -29,7 +31,8 @@ namespace Hospital.Infrastructure.Repositories
         IDepartmentRepository departmentRepository,
         INurseRepository nurseRepository,
         IPharmacistRepository pharmacistRepository,
-        IAccountantRepository accountantRepository)
+        IAccountantRepository accountantRepository,
+        IAppointmentRepository appointments)
         {
             _context = context;
 
@@ -40,6 +43,7 @@ namespace Hospital.Infrastructure.Repositories
             Nurses = nurseRepository;
             Pharmacists = pharmacistRepository;
             Accountants = accountantRepository;
+            Appointments = appointments;
         }
 
 
