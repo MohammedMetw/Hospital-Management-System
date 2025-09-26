@@ -21,6 +21,8 @@ namespace Hospital.Infrastructure.Persistence
 
         public DbSet<Appointment> Appointments { get; set; }
 
+        public DbSet<MedicineInventory> MedicineInventories { get; set; }
+
 
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {

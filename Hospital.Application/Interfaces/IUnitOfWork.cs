@@ -15,6 +15,9 @@ namespace Hospital.Application.Interfaces
         IPharmacistRepository Pharmacists { get; }
         IAccountantRepository Accountants { get; }
         IAppointmentRepository Appointments { get; }
+        
+        //IPrescriptionRepository Prescriptions { get; }
+        IMedicineInventoryRepository Medicines { get; }
 
 
         Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);

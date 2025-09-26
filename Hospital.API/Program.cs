@@ -52,6 +52,8 @@ namespace Hospital.API
             builder.Services.AddScoped<IPharmacistRepository, PharmacistRepository>();
             builder.Services.AddScoped<IAccountantRepository, AccountantRepository>();
             builder.Services.AddScoped<IAppointmentRepository, AppointmentRepository>();
+            builder.Services.AddScoped<IMedicineInventoryRepository, MedicineInventoryRepository>();
+
             builder.Services.AddScoped<ITokenService, TokenService>();
             builder.Services.AddScoped<IUserContextService, UserContextService>();
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();

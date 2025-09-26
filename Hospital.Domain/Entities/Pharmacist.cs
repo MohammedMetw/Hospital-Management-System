@@ -22,5 +22,7 @@ namespace Hospital.Domain.Entities
         // [ForeignKey("ApplicationUser")]
         public required string ApplicationUserId { get; set; }
         public ApplicationUser ApplicationUser { get; set; }
+
+        public virtual ICollection<MedicineInventory> Medicines { get; set; } = new List<MedicineInventory>();
     }
 }
