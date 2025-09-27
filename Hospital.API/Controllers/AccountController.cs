@@ -35,6 +35,18 @@ namespace Hospital.API.Controllers
         }
 
 
+        [HttpGet("confirm-email")]
+        public async Task<IActionResult> ConfirmEmail([FromQuery] ConfirmEmailCommand command)
+        {
+            var result = await _mediator.Send(command);
+            if (result)
+            {
+                return Ok("Email confirmed successfully.");
+            }
+            return BadRequest("Email could not be confirmed.");
+        }
+
+
 
     }
 }

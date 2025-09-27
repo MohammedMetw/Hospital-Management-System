@@ -35,6 +35,10 @@ namespace Hospital.Application.Features.Login.Command
             {
                 throw new UnauthorizedAccessException("Invalid email or password.");
             }
+            if (!await _userManager.IsEmailConfirmedAsync(user))
+            {
+                throw new UnauthorizedAccessException("Email is not confirmed.");
+            }
             var token = await _tokenService.CreateToken(user);
             var roles = await _userManager.GetRolesAsync(user);
             

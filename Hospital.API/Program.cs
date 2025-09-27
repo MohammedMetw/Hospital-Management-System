@@ -1,7 +1,9 @@
 using System.Text;
 using FluentValidation;
+using Hangfire;
 using Hospital.API.Middleware;
 using Hospital.Application.Common.Behaviors;
+using Hospital.Application.Common.Setting;
 using Hospital.Application.Features.Doctor.Command;
 using Hospital.Application.Interfaces;
 using Hospital.Domain.Entities;
@@ -35,7 +37,8 @@ namespace Hospital.API
 
             // --- Identity ---
             builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
-                .AddEntityFrameworkStores<AppDbContext>();
+                .AddEntityFrameworkStores<AppDbContext>()
+                 .AddDefaultTokenProviders(); ;
 
             // --- MediatR and Validation Configuration ---
             builder.Services.AddMediatR(cfg =>
@@ -43,7 +46,17 @@ namespace Hospital.API
             builder.Services.AddValidatorsFromAssembly(typeof(CreateDoctorCommandValidator).Assembly);
             builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
 
+            // -- Handgire Configuration (background jobs)---
+            builder.Services.AddHangfire(config => config
+                .UseSimpleAssemblyNameTypeSerializer()
+                .UseRecommendedSerializerSettings()
+                 .UseSqlServerStorage(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+
+            builder.Services.AddHangfireServer();
             builder.Services.AddHttpContextAccessor();
+           
+            builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
             // --- Repositories and Services ---
             builder.Services.AddScoped<IDoctorRepository, DoctorRepository>();
             builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
@@ -57,6 +70,7 @@ namespace Hospital.API
             builder.Services.AddScoped<IDispenseLogRepository, DispenseLogRepository>();
             builder.Services.AddScoped<IPrescriptionRepository,PrescriptionRepository >();
             builder.Services.AddScoped<IPrescribedMedicineRepository,PrescribedMedicineRepository>();
+            builder.Services.AddScoped<IEmailService , EmailService>();
 
             builder.Services.AddScoped<ITokenService, TokenService>();
             builder.Services.AddScoped<IUserContextService, UserContextService>();
@@ -120,6 +134,11 @@ namespace Hospital.API
                 });
             });
 
+
+
+           
+            builder.Services.AddHttpContextAccessor();
+
             // --- Build the app ---
             var app = builder.Build();
 
@@ -145,7 +164,7 @@ namespace Hospital.API
                 await RolesSeeder.SeedRolesAsync(scope.ServiceProvider);
             }
 
-
+            app.UseHangfireDashboard();
             // app.UseMiddleware<GlobalErrorHandlingMiddleware>();
 
             app.UseAuthentication();
