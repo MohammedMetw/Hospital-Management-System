@@ -19,7 +19,8 @@ namespace Hospital.Application.Interfaces
         //IPrescriptionRepository Prescriptions { get; }
         IMedicineInventoryRepository Medicines { get; }
 
-
+        IStockAdjustmentRepository StockAdjustments { get; }
+        IDispenseLogRepository DispenseLogs { get; }
         Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
     }
 }

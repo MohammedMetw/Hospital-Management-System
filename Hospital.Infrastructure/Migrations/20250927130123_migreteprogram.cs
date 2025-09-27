@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Hospital.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class migreteprogram : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -82,6 +82,27 @@ namespace Hospital.Infrastructure.Migrations
                         name: "FK_AspNetRoleClaims_AspNetRoles_RoleId",
                         column: x => x.RoleId,
                         principalTable: "AspNetRoles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Accountants",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ApplicationUserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Accountants", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Accountants_AspNetUsers_ApplicationUserId",
+                        column: x => x.ApplicationUserId,
+                        principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -182,6 +203,7 @@ namespace Hospital.Infrastructure.Migrations
                     City = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Phone = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Gender = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ApplicationUserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
@@ -196,7 +218,58 @@ namespace Hospital.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Doctors",
+                name: "pharmacists",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Phone = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Shift = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ApplicationUserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_pharmacists", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_pharmacists_AspNetUsers_ApplicationUserId",
+                        column: x => x.ApplicationUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Nurses",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Phone = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Shift = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ApplicationUserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    DepartmentId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Nurses", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Nurses_AspNetUsers_ApplicationUserId",
+                        column: x => x.ApplicationUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Nurses_Departments_DepartmentId",
+                        column: x => x.DepartmentId,
+                        principalTable: "Departments",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Patient",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -209,20 +282,154 @@ namespace Hospital.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Doctors", x => x.Id);
+                    table.PrimaryKey("PK_Patient", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Doctors_AspNetUsers_ApplicationUserId",
+                        name: "FK_Patient_AspNetUsers_ApplicationUserId",
                         column: x => x.ApplicationUserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Doctors_Departments_DepartmentId",
+                        name: "FK_Patient_Departments_DepartmentId",
                         column: x => x.DepartmentId,
                         principalTable: "Departments",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.CreateTable(
+                name: "MedicineInventories",
+                columns: table => new
+                {
+                    MedicineInventoryId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    MedicineName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Supplier = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Quantity = table.Column<int>(type: "int", nullable: false),
+                    UnitPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    ExpirationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    BatchNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    QRCodeData = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PharmacistId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_MedicineInventories", x => x.MedicineInventoryId);
+                    table.ForeignKey(
+                        name: "FK_MedicineInventories_pharmacists_PharmacistId",
+                        column: x => x.PharmacistId,
+                        principalTable: "pharmacists",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Appointments",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Date = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DoctorId = table.Column<int>(type: "int", nullable: false),
+                    PatientId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Appointments", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Appointments_Patient_DoctorId",
+                        column: x => x.DoctorId,
+                        principalTable: "Patient",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Appointments_Patients_PatientId",
+                        column: x => x.PatientId,
+                        principalTable: "Patients",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "DispenseLogs",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    MedicineInventoryId = table.Column<int>(type: "int", nullable: false),
+                    PatientId = table.Column<int>(type: "int", nullable: false),
+                    PharmacistId = table.Column<int>(type: "int", nullable: false),
+                    QuantityDispensed = table.Column<int>(type: "int", nullable: false),
+                    DispenseDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_DispenseLogs", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_DispenseLogs_MedicineInventories_MedicineInventoryId",
+                        column: x => x.MedicineInventoryId,
+                        principalTable: "MedicineInventories",
+                        principalColumn: "MedicineInventoryId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_DispenseLogs_Patients_PatientId",
+                        column: x => x.PatientId,
+                        principalTable: "Patients",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_DispenseLogs_pharmacists_PharmacistId",
+                        column: x => x.PharmacistId,
+                        principalTable: "pharmacists",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "StockAdjustments",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    MedicineInventoryId = table.Column<int>(type: "int", nullable: false),
+                    PharmacistId = table.Column<int>(type: "int", nullable: false),
+                    QuantityChanged = table.Column<int>(type: "int", nullable: false),
+                    Reason = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    AdjustmentDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_StockAdjustments", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_StockAdjustments_MedicineInventories_MedicineInventoryId",
+                        column: x => x.MedicineInventoryId,
+                        principalTable: "MedicineInventories",
+                        principalColumn: "MedicineInventoryId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_StockAdjustments_pharmacists_PharmacistId",
+                        column: x => x.PharmacistId,
+                        principalTable: "pharmacists",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Accountants_ApplicationUserId",
+                table: "Accountants",
+                column: "ApplicationUserId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Appointments_DoctorId",
+                table: "Appointments",
+                column: "DoctorId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Appointments_PatientId",
+                table: "Appointments",
+                column: "PatientId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -264,14 +471,45 @@ namespace Hospital.Infrastructure.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Doctors_ApplicationUserId",
-                table: "Doctors",
+                name: "IX_DispenseLogs_MedicineInventoryId",
+                table: "DispenseLogs",
+                column: "MedicineInventoryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_DispenseLogs_PatientId",
+                table: "DispenseLogs",
+                column: "PatientId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_DispenseLogs_PharmacistId",
+                table: "DispenseLogs",
+                column: "PharmacistId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_MedicineInventories_PharmacistId",
+                table: "MedicineInventories",
+                column: "PharmacistId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Nurses_ApplicationUserId",
+                table: "Nurses",
                 column: "ApplicationUserId",
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Doctors_DepartmentId",
-                table: "Doctors",
+                name: "IX_Nurses_DepartmentId",
+                table: "Nurses",
+                column: "DepartmentId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Patient_ApplicationUserId",
+                table: "Patient",
+                column: "ApplicationUserId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Patient_DepartmentId",
+                table: "Patient",
                 column: "DepartmentId");
 
             migrationBuilder.CreateIndex(
@@ -279,11 +517,33 @@ namespace Hospital.Infrastructure.Migrations
                 table: "Patients",
                 column: "ApplicationUserId",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_pharmacists_ApplicationUserId",
+                table: "pharmacists",
+                column: "ApplicationUserId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_StockAdjustments_MedicineInventoryId",
+                table: "StockAdjustments",
+                column: "MedicineInventoryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_StockAdjustments_PharmacistId",
+                table: "StockAdjustments",
+                column: "PharmacistId");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "Accountants");
+
+            migrationBuilder.DropTable(
+                name: "Appointments");
+
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
 
@@ -300,16 +560,31 @@ namespace Hospital.Infrastructure.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Doctors");
+                name: "DispenseLogs");
 
             migrationBuilder.DropTable(
-                name: "Patients");
+                name: "Nurses");
+
+            migrationBuilder.DropTable(
+                name: "StockAdjustments");
+
+            migrationBuilder.DropTable(
+                name: "Patient");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
+                name: "Patients");
+
+            migrationBuilder.DropTable(
+                name: "MedicineInventories");
+
+            migrationBuilder.DropTable(
                 name: "Departments");
+
+            migrationBuilder.DropTable(
+                name: "pharmacists");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");

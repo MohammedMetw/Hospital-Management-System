@@ -23,6 +23,11 @@ namespace Hospital.Domain.Entities
         public required string ApplicationUserId { get; set; }
         public ApplicationUser ApplicationUser { get; set; }
 
-        public virtual ICollection<MedicineInventory> Medicines { get; set; } = new List<MedicineInventory>();
+        public virtual ICollection<MedicineInventory> MedicineInventories { get; set; } = new List<MedicineInventory>();
+
+        // --- ADD THESE NEW COLLECTIONS ---
+        public virtual ICollection<StockAdjustment> StockAdjustments { get; set; } = new List<StockAdjustment>();
+        public virtual ICollection<DispenseLog> DispenseLogs { get; set; } = new List<DispenseLog>();
+
     }
 }

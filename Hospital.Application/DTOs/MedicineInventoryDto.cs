@@ -4,11 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Hospital.Domain.Entities
+namespace Hospital.Application.DTOs
 {
-    public class MedicineInventory
+    public class MedicineInventoryDto
     {
         public int MedicineInventoryId { get; set; }
+
+       // public int PharmacistId { get; set; }
 
         public string MedicineName { get; set; }
 
@@ -26,5 +28,6 @@ namespace Hospital.Domain.Entities
 
         public string QRCodeData { get; set; }
 
+       
     }
 }

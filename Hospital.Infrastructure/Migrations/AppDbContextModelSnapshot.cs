@@ -170,6 +170,40 @@ namespace Hospital.Infrastructure.Migrations
                     b.ToTable("Departments");
                 });
 
+            modelBuilder.Entity("Hospital.Domain.Entities.DispenseLog", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("DispenseDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("MedicineInventoryId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PatientId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PharmacistId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("QuantityDispensed")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MedicineInventoryId");
+
+                    b.HasIndex("PatientId");
+
+                    b.HasIndex("PharmacistId");
+
+                    b.ToTable("DispenseLogs");
+                });
+
             modelBuilder.Entity("Hospital.Domain.Entities.Doctor", b =>
                 {
                     b.Property<int>("Id")
@@ -226,7 +260,7 @@ namespace Hospital.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("PharmacistId")
+                    b.Property<int?>("PharmacistId")
                         .HasColumnType("int");
 
                     b.Property<string>("QRCodeData")
@@ -363,6 +397,39 @@ namespace Hospital.Infrastructure.Migrations
                         .IsUnique();
 
                     b.ToTable("pharmacists");
+                });
+
+            modelBuilder.Entity("Hospital.Domain.Entities.StockAdjustment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("AdjustmentDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("MedicineInventoryId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PharmacistId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("QuantityChanged")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Reason")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MedicineInventoryId");
+
+                    b.HasIndex("PharmacistId");
+
+                    b.ToTable("StockAdjustments");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -528,6 +595,33 @@ namespace Hospital.Infrastructure.Migrations
                     b.Navigation("patient");
                 });
 
+            modelBuilder.Entity("Hospital.Domain.Entities.DispenseLog", b =>
+                {
+                    b.HasOne("Hospital.Domain.Entities.MedicineInventory", "MedicineInventory")
+                        .WithMany()
+                        .HasForeignKey("MedicineInventoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Hospital.Domain.Entities.Patient", "Patient")
+                        .WithMany()
+                        .HasForeignKey("PatientId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Hospital.Domain.Entities.Pharmacist", "Pharmacist")
+                        .WithMany("DispenseLogs")
+                        .HasForeignKey("PharmacistId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("MedicineInventory");
+
+                    b.Navigation("Patient");
+
+                    b.Navigation("Pharmacist");
+                });
+
             modelBuilder.Entity("Hospital.Domain.Entities.Doctor", b =>
                 {
                     b.HasOne("Hospital.Domain.Entities.ApplicationUser", "ApplicationUser")
@@ -549,13 +643,9 @@ namespace Hospital.Infrastructure.Migrations
 
             modelBuilder.Entity("Hospital.Domain.Entities.MedicineInventory", b =>
                 {
-                    b.HasOne("Hospital.Domain.Entities.Pharmacist", "Pharmacist")
-                        .WithMany("Medicines")
-                        .HasForeignKey("PharmacistId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Pharmacist");
+                    b.HasOne("Hospital.Domain.Entities.Pharmacist", null)
+                        .WithMany("MedicineInventories")
+                        .HasForeignKey("PharmacistId");
                 });
 
             modelBuilder.Entity("Hospital.Domain.Entities.Nurse", b =>
@@ -597,6 +687,25 @@ namespace Hospital.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("ApplicationUser");
+                });
+
+            modelBuilder.Entity("Hospital.Domain.Entities.StockAdjustment", b =>
+                {
+                    b.HasOne("Hospital.Domain.Entities.MedicineInventory", "MedicineInventory")
+                        .WithMany()
+                        .HasForeignKey("MedicineInventoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Hospital.Domain.Entities.Pharmacist", "Pharmacist")
+                        .WithMany("StockAdjustments")
+                        .HasForeignKey("PharmacistId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("MedicineInventory");
+
+                    b.Navigation("Pharmacist");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -680,7 +789,11 @@ namespace Hospital.Infrastructure.Migrations
 
             modelBuilder.Entity("Hospital.Domain.Entities.Pharmacist", b =>
                 {
-                    b.Navigation("Medicines");
+                    b.Navigation("DispenseLogs");
+
+                    b.Navigation("MedicineInventories");
+
+                    b.Navigation("StockAdjustments");
                 });
 #pragma warning restore 612, 618
         }

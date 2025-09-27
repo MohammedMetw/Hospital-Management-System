@@ -15,6 +15,7 @@ namespace Hospital.Infrastructure.Repositories
         public MedicineInventoryRepository(AppDbContext context) : base(context)
         { }
 
+       
         public async Task<IEnumerable<MedicineInventory>> GetExpiredMedicinesAsync()
         {
             return await _context.MedicineInventories
@@ -35,7 +36,11 @@ namespace Hospital.Infrastructure.Repositories
                 Where(m => m.MedicineName.ToLower() == medicineName.ToLower())
                 .ToListAsync();
         }
+        public async Task<MedicineInventory?> GetByQrCodeDataAsync(string qrCodeData)
+        {
+            return await _context.MedicineInventories
+                                 .FirstOrDefaultAsync(m => m.QRCodeData == qrCodeData);
+        }
 
-       
     }
 }

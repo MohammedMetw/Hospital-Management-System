@@ -1,4 +1,5 @@
-﻿using Hospital.Application.Interfaces;
+﻿using System.Linq.Expressions;
+using Hospital.Application.Interfaces;
 using Hospital.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 
@@ -49,6 +50,22 @@ namespace Hospital.Infrastructure.Repositories
         public async Task<int> SaveChangesAsync()
         {
             return await _context.SaveChangesAsync();
+        }
+
+
+        public async Task<IEnumerable<T>> FindAllAsync(Expression<Func<T, bool>> criteria, string[]? includes = null)
+        {
+            IQueryable<T> query = _context.Set<T>();
+
+            if (includes != null)
+            {
+                foreach (var include in includes)
+                {
+                    query = query.Include(include);
+                }
+            }
+
+            return await query.Where(criteria).ToListAsync();
         }
     }
 }

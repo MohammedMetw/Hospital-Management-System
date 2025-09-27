@@ -15,5 +15,7 @@ namespace Hospital.Application.Interfaces
         Task<IEnumerable<MedicineInventory>> GetLowStockMedicinesAsync(int lowStockThreshold);
 
         Task<IEnumerable<MedicineInventory>> GetExpiredMedicinesAsync();
+
+        Task<MedicineInventory?> GetByQrCodeDataAsync(string qrCodeData);
     }
 }

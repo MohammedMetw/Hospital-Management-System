@@ -24,6 +24,9 @@ namespace Hospital.Infrastructure.Repositories
 
         public IMedicineInventoryRepository Medicines { get; private set; }
 
+        public IStockAdjustmentRepository StockAdjustments { get; private set; }
+        public IDispenseLogRepository DispenseLogs { get; private set; }
+
 
 
         public UnitOfWork(
@@ -35,7 +38,9 @@ namespace Hospital.Infrastructure.Repositories
         IPharmacistRepository pharmacistRepository,
         IAccountantRepository accountantRepository,
         IAppointmentRepository appointments,
-        IMedicineInventoryRepository medicines)
+        IMedicineInventoryRepository medicines,
+        IStockAdjustmentRepository stockAdjustments,
+        IDispenseLogRepository dispenseLogs)
         {
             _context = context;
 
@@ -48,6 +53,8 @@ namespace Hospital.Infrastructure.Repositories
             Accountants = accountantRepository;
             Appointments = appointments;
             Medicines = medicines;
+            StockAdjustments = stockAdjustments;
+            DispenseLogs = dispenseLogs;
         }
 
 
