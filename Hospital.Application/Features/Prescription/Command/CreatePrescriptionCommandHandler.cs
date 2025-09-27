@@ -18,6 +18,15 @@ namespace Hospital.Application.Features.Prescription.Command
         }
         public async Task<int> Handle(CreatePrescriptionCommand request, CancellationToken cancellationToken)
         {
+            var appointment = await _unitOfWork.Appointments.GetByIdAsync(request.AppointmentId);
+            if (appointment == null)
+            {
+                throw new Exception("Appointment not found");
+            }
+            if (appointment.Status == "Completed" || appointment.Status == "Cancelled")
+            {
+                throw new Exception("This appointment has already been completed or cancelled.");
+            }
             var newPrescription = new Domain.Entities.Prescription()
             {
                 PrescriptionDate = DateTime.Now,
@@ -42,6 +51,7 @@ namespace Hospital.Application.Features.Prescription.Command
                
                 await _unitOfWork.PrescribedMedicines.AddAsync(newPrescribedMedicine);
             }
+            appointment.Status = "Completed";
             await _unitOfWork.SaveChangesAsync();
 
             return newPrescription.PrescriptionId;

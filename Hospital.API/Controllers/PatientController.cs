@@ -61,5 +61,11 @@ namespace Hospital.API.Controllers
             return Ok(result);
         }
 
+        [HttpGet("Patient-History/{id}")]
+       public async Task<IActionResult> PatientHistory(int id)
+        {
+            var result = await _mediator.Send(new PatientHistoryQuery { PatientId = id });
+            return Ok(result);
+        }
     }
 }

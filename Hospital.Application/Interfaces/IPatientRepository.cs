@@ -10,5 +10,9 @@ namespace Hospital.Application.Interfaces
     public interface IPatientRepository : IGenericRepository<Patient>
     {
         Task<Patient?> GetPatientByName(string name);
+
+        Task<Patient?> GetPatientHistoryAsync(int id);
     }
+
+
 }

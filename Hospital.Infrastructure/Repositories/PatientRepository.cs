@@ -35,5 +35,26 @@ namespace Hospital.Infrastructure.Repositories
                 .Include(p => p.ApplicationUser)
                 .FirstOrDefaultAsync(p => (p.ApplicationUser.FirstName + " " + p.ApplicationUser.LastName) == name);
         }
+
+        public async Task<Patient?> GetPatientHistoryAsync(int id)
+        {
+            return await _context.Patients
+                .Include(p => p.ApplicationUser) 
+
+                .Include(p => p.Appointments) 
+                    .ThenInclude(a => a.doctor) 
+                        .ThenInclude(d => d.ApplicationUser) 
+
+                .Include(p => p.Prescriptions) 
+                    .ThenInclude(pr => pr.PrescribedMedicines)
+
+                .Include(p => p.DispenseLogs)
+                       .ThenInclude(dl => dl.MedicineInventory)
+                 .Include(p => p.DispenseLogs)
+                           .ThenInclude(dl => dl.Pharmacist) 
+                                .ThenInclude(ph => ph.ApplicationUser) 
+
+                .FirstOrDefaultAsync(p => p.Id == id);
+        }
     }
 }

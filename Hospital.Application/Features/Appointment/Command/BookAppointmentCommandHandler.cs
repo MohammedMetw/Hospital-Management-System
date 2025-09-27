@@ -39,10 +39,10 @@ namespace Hospital.Application.Features.Appointment.Command
                 throw new Exception("Patient not found");
             }
 
-            if (currentUserRole != "Admin" && !(currentUserRole == "Patient" && patient.ApplicationUserId == currentUserId))
-            {
-                throw new UnauthorizedAccessException("You are not authorized to book an appointment for this patient.");
-            }
+            //if (currentUserRole != "Admin" && !(currentUserRole == "Patient" && patient.ApplicationUserId == currentUserId))
+            //{
+            //    throw new UnauthorizedAccessException("You are not authorized to book an appointment for this patient.");
+            //}
 
 
             var newAppointment = new Domain.Entities.Appointment

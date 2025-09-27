@@ -15,6 +15,7 @@ namespace Hospital.Application.Features.Prescription.Command
        
         public int PatientId { get; set; }
 
+        public int AppointmentId { get; set; }
         public required List<PrescribedMedicineDto> PrescribedMedicines { get; set; }
         
     }

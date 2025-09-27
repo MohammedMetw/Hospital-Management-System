@@ -20,7 +20,8 @@ namespace Hospital.Domain.Entities
         public int PatientId { get; set; }
         public virtual Patient Patient { get; set; }
 
-       
+        public int? AppointmentId { get; set; }
+        public virtual Appointment? Appointment { get; set; }
         public virtual ICollection<PrescribedMedicine> PrescribedMedicines { get; set; } = new List<PrescribedMedicine>();
     }
 }

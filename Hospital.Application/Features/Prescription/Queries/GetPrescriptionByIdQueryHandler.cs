@@ -36,9 +36,6 @@ namespace Hospital.Application.Features.Prescription.Queries
                     MedicineName = m.MedicineName,
                     Quantity = m.Quantity,
                     Instructions = m.Instructions
-
-
-
                 }).ToList()
 
 

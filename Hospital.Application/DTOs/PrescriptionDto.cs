@@ -19,7 +19,7 @@ namespace Hospital.Application.DTOs
         public int PatientId { get; set; }
         public string PatientName { get; set; }
 
-       
+      
         public List<PrescribedMedicineDto> PrescribedMedicines { get; set; }
 
     }
