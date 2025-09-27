@@ -4,14 +4,21 @@ using Hospital.Application.Exceptions;
 using Hospital.Application.Features.Prescription.Command;
 using Hospital.Domain.Entities;
 using Hospital.Application.DTOs;
-
+using Hangfire;
 public class DispensePrescriptionCommandHandler : IRequestHandler<DispensePrescriptionCommand, BillDto>
 {
     private readonly IUnitOfWork _unitOfWork;
-
-    public DispensePrescriptionCommandHandler(IUnitOfWork unitOfWork)
+    private readonly IBackgroundJobClient _backgroundJobClient;
+    private readonly INotificationService _notificationService;
+    private const int LowStockThreshold = 5;
+    public DispensePrescriptionCommandHandler(
+         IUnitOfWork unitOfWork,
+         IBackgroundJobClient backgroundJobClient,
+         INotificationService notificationService)
     {
         _unitOfWork = unitOfWork;
+        _backgroundJobClient = backgroundJobClient;
+        _notificationService = notificationService;
     }
 
     public async Task<BillDto> Handle(DispensePrescriptionCommand request, CancellationToken cancellationToken)
@@ -47,6 +54,13 @@ public class DispensePrescriptionCommandHandler : IRequestHandler<DispensePrescr
                 inventoryStock.Quantity -= prescribedMed.Quantity;
                 await _unitOfWork.Medicines.UpdateAsync(inventoryStock);
 
+
+
+                if (inventoryStock.Quantity <= LowStockThreshold)
+                {
+                    _backgroundJobClient.Enqueue(
+                        () => _notificationService.SendLowStockAlertAsync(inventoryStock.MedicineName, inventoryStock.Quantity));
+                }
                 var log = new DispenseLog
                 {
                     MedicineInventoryId = inventoryStock.MedicineInventoryId,
