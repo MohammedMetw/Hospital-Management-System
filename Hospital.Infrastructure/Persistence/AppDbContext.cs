@@ -25,6 +25,8 @@ namespace Hospital.Infrastructure.Persistence
         public DbSet<StockAdjustment> StockAdjustments { get; set; }
         public DbSet<DispenseLog> DispenseLogs { get; set; }
 
+        public DbSet<Prescription> Prescriptions { get; set; }
+        public DbSet<PrescribedMedicine> prescribedMedicines { get; set; }
 
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
@@ -34,6 +36,24 @@ namespace Hospital.Infrastructure.Persistence
         {
             
             base.OnModelCreating(builder);
+
+
+            builder.Entity<Prescription>()
+                .HasOne(p => p.Patient)
+                .WithMany(p =>  p.Prescriptions)
+                .HasForeignKey(p => p.PatientId)
+                .OnDelete(DeleteBehavior.Restrict);
+            builder.Entity<Prescription>()
+                .HasOne(p => p.Doctor)
+                .WithMany(p => p.Prescriptions)
+                .HasForeignKey(p => p.DoctorId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<PrescribedMedicine>()
+                   .HasOne(p => p.Prescription)
+                   .WithMany(p => p.PrescribedMedicines)
+                   .HasForeignKey(p => p.PrescriptionId)
+                   .OnDelete(DeleteBehavior.Cascade);
 
             builder.Entity<DispenseLog>()
           .HasOne(dl => dl.Pharmacist)

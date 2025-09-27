@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace Hospital.Domain.Entities
 {
@@ -29,7 +30,7 @@ namespace Hospital.Domain.Entities
         public int DepartmentId { get; set; }
         public virtual Department Department { get; set; }
 
-
+        public virtual ICollection<Prescription> Prescriptions { get; set; } = new List<Prescription>();
         public virtual ICollection<Appointment> Appointments { get; set; } = new List<Appointment>();
     }
 }

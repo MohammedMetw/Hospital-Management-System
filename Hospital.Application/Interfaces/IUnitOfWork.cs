@@ -16,7 +16,8 @@ namespace Hospital.Application.Interfaces
         IAccountantRepository Accountants { get; }
         IAppointmentRepository Appointments { get; }
         
-        //IPrescriptionRepository Prescriptions { get; }
+        IPrescriptionRepository Prescriptions { get; }
+        IPrescribedMedicineRepository PrescribedMedicines { get; }
         IMedicineInventoryRepository Medicines { get; }
 
         IStockAdjustmentRepository StockAdjustments { get; }

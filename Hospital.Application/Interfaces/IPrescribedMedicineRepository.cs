@@ -7,8 +7,7 @@ using Hospital.Domain.Entities;
 
 namespace Hospital.Application.Interfaces
 {
-    public interface IStockAdjustmentRepository : IGenericRepository<StockAdjustment>
+   public interface IPrescribedMedicineRepository : IGenericRepository<PrescribedMedicine>
     {
-        
     }
 }

@@ -42,5 +42,14 @@ namespace Hospital.Infrastructure.Repositories
                                  .FirstOrDefaultAsync(m => m.QRCodeData == qrCodeData);
         }
 
+        public async Task<MedicineInventory?> FindFirstAvailableBatchByNameAsync(string medicineName, int requiredQuantity)
+        {
+            return await _context.MedicineInventories
+                .Where(m => m.MedicineName.ToLower() == medicineName.ToLower()
+                            && m.Quantity >= requiredQuantity
+                            && m.ExpirationDate > DateTime.UtcNow)
+                .OrderBy(m => m.ExpirationDate) 
+                .FirstOrDefaultAsync();
+        }
     }
 }

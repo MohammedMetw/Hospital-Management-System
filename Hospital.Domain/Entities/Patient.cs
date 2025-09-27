@@ -24,7 +24,7 @@ namespace Hospital.Domain.Entities
         public  required string ApplicationUserId { get; set; }
         public  ApplicationUser ApplicationUser { get; set; }
 
-
+        public virtual ICollection<Prescription> Prescriptions { get; set; } = new List<Prescription>();
         public virtual ICollection<Appointment> Appointments { get; set; } = new List<Appointment>();
     }
 }

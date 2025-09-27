@@ -17,5 +17,7 @@ namespace Hospital.Application.Interfaces
         Task<IEnumerable<MedicineInventory>> GetExpiredMedicinesAsync();
 
         Task<MedicineInventory?> GetByQrCodeDataAsync(string qrCodeData);
+
+        Task<MedicineInventory?> FindFirstAvailableBatchByNameAsync(string medicineName, int requiredQuantity);
     }
 }
