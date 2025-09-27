@@ -27,6 +27,10 @@ namespace Hospital.Application.Features.Prescription.Command
             {
                 throw new Exception("This appointment has already been completed or cancelled.");
             }
+            if(appointment.PatientId != request.PatientId || appointment.DoctorId != request.DoctorId)
+            {
+                throw new Exception("This appointment is not for this patient or doctor");
+            }
             var newPrescription = new Domain.Entities.Prescription()
             {
                 PrescriptionDate = DateTime.Now,

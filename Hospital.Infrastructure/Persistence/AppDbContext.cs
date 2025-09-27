@@ -108,7 +108,11 @@ namespace Hospital.Infrastructure.Persistence
                 .WithOne(a => a.ApplicationUser)
                 .HasForeignKey<Accountant>(a => a.ApplicationUserId);
 
-
+            builder.Entity<Appointment>()
+               .HasOne(a => a.Nurse)
+               .WithMany(n => n.Appointments)
+               .HasForeignKey(a => a.NurseId)
+               .OnDelete(DeleteBehavior.SetNull);
 
         }
     }

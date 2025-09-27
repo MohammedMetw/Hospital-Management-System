@@ -18,7 +18,8 @@ namespace Hospital.Domain.Entities
         public int DoctorId { get; set; }
         public virtual Doctor doctor { get; set; }
 
-
+        public int? NurseId { get; set; }
+        public virtual Nurse? Nurse { get; set; }
         public int PatientId { get; set; }
         public virtual Patient patient { get; set; }
     }

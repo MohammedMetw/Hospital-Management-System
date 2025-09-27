@@ -19,5 +19,7 @@ namespace Hospital.Domain.Entities
         public  int DepartmentId { get; set; }
         public Department Department { get; set; }
 
+        public virtual ICollection<Appointment> Appointments { get; set; } = new List<Appointment>();
+
     }
 }
