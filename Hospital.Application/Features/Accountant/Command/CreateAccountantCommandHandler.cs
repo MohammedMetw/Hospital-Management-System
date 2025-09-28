@@ -8,6 +8,7 @@ using Hospital.Application.DTOs;
 using Hospital.Application.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
+using Hospital.Application.Exceptions;
 
 namespace Hospital.Application.Features.Accountant.Command
 {
@@ -43,7 +44,7 @@ namespace Hospital.Application.Features.Accountant.Command
             var result = _userManager.CreateAsync(user, request.Password).Result;
             if (!result.Succeeded)
             {
-                throw new Exception("Failed to create user: " + string.Join(", ", result.Errors.Select(e => e.Description)));
+                throw new NotFoundException("Failed to create user: " + string.Join(", ", result.Errors.Select(e => e.Description)));
             }
            await _userManager.AddToRoleAsync(user, "Accountant");
            await _unitOfWork.Accountants.AddAsync(Accountant);

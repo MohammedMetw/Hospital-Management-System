@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Hospital.Application.Exceptions;
 using Hospital.Application.Interfaces;
 using Hospital.Domain.Entities;
 using MediatR;
@@ -27,7 +28,7 @@ namespace Hospital.Application.Features.Patient.Command
             var patient = await _unitOfWork.Patients.GetByIdAsync(command.Id);
             if (patient == null)
             {
-                throw new Exception("Patient not found");
+                throw new NotFoundException("Patient not found");
             }
             await _unitOfWork.Patients.DeleteAsync(patient);
             await _userManager.RemoveFromRoleAsync(patient.ApplicationUser, "Patient");

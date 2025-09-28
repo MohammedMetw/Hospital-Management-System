@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Hospital.Application.Exceptions;
 using Hospital.Application.Interfaces;
 using Hospital.Domain.Entities;
 using MediatR;
@@ -26,7 +27,7 @@ namespace Hospital.Application.Features.Pharmacist.Command
             var pharmacist = await _unitOfWork.Pharmacists.GetByIdAsync(request.Id);
             if (pharmacist == null)
             {
-                throw new Exception("Pharmacist not found");
+                throw new NotFoundException("Pharmacist not found");
             }
 
             await _unitOfWork.Pharmacists.DeleteAsync(pharmacist);

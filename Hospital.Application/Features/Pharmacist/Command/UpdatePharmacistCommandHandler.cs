@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Hospital.Application.DTOs;
+using Hospital.Application.Exceptions;
 using Hospital.Application.Interfaces;
 using MediatR;
 
@@ -23,7 +24,7 @@ namespace Hospital.Application.Features.Pharmacist.Command
             var pharmacist = await _unitOfWork.Pharmacists.GetByIdAsync(request.Id);
             if (pharmacist == null)
             {
-                throw new Exception("Pharmacist not found");
+                throw new NotFoundException("Pharmacist not found");
             }
 
             pharmacist.ApplicationUser.FirstName = request.FirstName;

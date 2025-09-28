@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Hospital.Application.DTOs;
+using Hospital.Application.Exceptions;
 using Hospital.Application.Interfaces;
 using MediatR;
 
@@ -21,7 +22,7 @@ namespace Hospital.Application.Features.Accountant.Command
             var accountant = await _unitOfWork.Accountants.GetByIdAsync(request.Id);
             if (accountant == null)
             {
-                throw new Exception("Accountant not found");
+                throw new NotFoundException("Accountant not found");
             }
             accountant.ApplicationUser.FirstName = request.FirstName;
             accountant.ApplicationUser.LastName = request.LastName;

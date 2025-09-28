@@ -5,6 +5,7 @@ using Hospital.Application.Interfaces;
 using Hospital.Application.DTOs;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
+using Hospital.Application.Exceptions;
 
 namespace Hospital.Application.Features.Nurse.Command
 {
@@ -42,7 +43,7 @@ namespace Hospital.Application.Features.Nurse.Command
             var result = await _userManager.CreateAsync(user, request.Password);
             if (!result.Succeeded)
             {
-                throw new Exception("Failed to create user: " + string.Join(", ", result.Errors.Select(e => e.Description)));
+                throw new NotFoundException("Failed to create user: " + string.Join(", ", result.Errors.Select(e => e.Description)));
             }
             await _userManager.AddToRoleAsync(user, "Nurse");
             await _unitOfWork.Nurses.AddAsync(nurse);

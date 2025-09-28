@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Hospital.Application.Exceptions;
 using Hospital.Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
@@ -22,7 +23,7 @@ namespace Hospital.Application.Features.User.Command
             var user = await _userManager.FindByIdAsync(request.Id);
             if (user == null)
             {
-                throw new Exception("User not found");
+                throw new NotFoundException("User not found");
             }
             await _userManager.SetLockoutEndDateAsync(user, DateTimeOffset.UtcNow);
             return Unit.Value;

@@ -70,7 +70,7 @@ namespace Hospital.Application.Features.Register.Command
 
             //  URL HERE 
             var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-
+            // عاوز اتاكد هل دا ضد الكلين اركيتشر ولا اي؟
             var request = _httpContextAccessor.HttpContext.Request;
             var baseUrl = $"{request.Scheme}://{request.Host}";
 

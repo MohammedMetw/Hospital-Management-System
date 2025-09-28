@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Hospital.Application.DTOs;
+using Hospital.Application.Exceptions;
 using Hospital.Application.Interfaces;
 using MediatR;
 
@@ -21,15 +22,15 @@ namespace Hospital.Application.Features.Prescription.Command
             var appointment = await _unitOfWork.Appointments.GetByIdAsync(request.AppointmentId);
             if (appointment == null)
             {
-                throw new Exception("Appointment not found");
+                throw new NotFoundException("Appointment not found");
             }
             if (appointment.Status == "Completed" || appointment.Status == "Cancelled")
             {
-                throw new Exception("This appointment has already been completed or cancelled.");
+                throw new NotFoundException("This appointment has already been completed or cancelled.");
             }
             if(appointment.PatientId != request.PatientId || appointment.DoctorId != request.DoctorId)
             {
-                throw new Exception("This appointment is not for this patient or doctor");
+                throw new NotFoundException("This appointment is not for this patient or doctor");
             }
             var newPrescription = new Domain.Entities.Prescription()
             {

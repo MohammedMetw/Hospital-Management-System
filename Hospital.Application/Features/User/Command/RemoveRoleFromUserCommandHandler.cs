@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Hospital.Application.Exceptions;
 using Hospital.Application.Interfaces;
 using Hospital.Domain.Entities;
 using MediatR;
@@ -25,12 +26,12 @@ namespace Hospital.Application.Features.User.Command
             var user = await _userManager.FindByIdAsync(request.UserId);
             if (user == null)
             {
-                throw new Exception("User not found");
+                throw new NotFoundException("User not found");
             }
             var roles = await _userManager.GetRolesAsync(user);
             if (!roles.Contains(request.RoleName))
             {
-                throw new Exception($"User does not have the role {request.RoleName}");
+                throw new NotFoundException($"User does not have the role {request.RoleName}");
             }
 
             var result= await _userManager.RemoveFromRoleAsync(user, request.RoleName);

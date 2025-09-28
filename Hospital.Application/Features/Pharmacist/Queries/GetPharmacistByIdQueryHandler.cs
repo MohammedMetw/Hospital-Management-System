@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Hospital.Application.DTOs;
+using Hospital.Application.Exceptions;
 using Hospital.Application.Interfaces;
 using MediatR;
 
@@ -24,7 +25,7 @@ namespace Hospital.Application.Features.Pharmacist.Queries
 
             if (pharmacists == null)
             {
-                throw new Exception("Pharmacist not found");
+                throw new NotFoundException("Pharmacist not found");
             }
 
            

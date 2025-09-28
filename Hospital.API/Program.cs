@@ -52,7 +52,13 @@ namespace Hospital.API
                 .UseRecommendedSerializerSettings()
                  .UseSqlServerStorage(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-
+            builder.Services.AddHttpClient<IAIChatService, AIChatService>(client =>
+            {
+                client.BaseAddress = new Uri(builder.Configuration["AiSettings:OpenRouterBaseUrl"]);
+                client.DefaultRequestHeaders.Authorization =
+                    new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", builder.Configuration["AiSettings:OpenRouterApiKey"]);
+                client.DefaultRequestHeaders.Add("HTTP-Referer", "http://localhost");
+            });
             builder.Services.AddHangfireServer();
             builder.Services.AddHttpContextAccessor();
            
@@ -75,7 +81,9 @@ namespace Hospital.API
 
             builder.Services.AddScoped<ITokenService, TokenService>();
             builder.Services.AddScoped<IUserContextService, UserContextService>();
+            builder.Services.AddScoped<IAIChatService, AIChatService>();
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+            
 
             // --- JWT Authentication ---
             builder.Services.AddAuthentication(options =>
@@ -137,12 +145,13 @@ namespace Hospital.API
 
 
 
-           
+            builder.Services.AddHttpClient();
             builder.Services.AddHttpContextAccessor();
 
             // --- Build the app ---
             var app = builder.Build();
 
+           
             // Development environment configuration
             if (app.Environment.IsDevelopment())
             {

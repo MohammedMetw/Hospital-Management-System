@@ -32,7 +32,7 @@ public class HardDeleteUserCommandHandler : IRequestHandler<HardDeleteUserComman
 
         if (!result.Succeeded)
         {
-            throw new Exception("Failed to delete user. " + string.Join(", ", result.Errors.Select(e => e.Description)));
+            throw new NotFoundException("Failed to delete user. " + string.Join(", ", result.Errors.Select(e => e.Description)));
         }
 
        

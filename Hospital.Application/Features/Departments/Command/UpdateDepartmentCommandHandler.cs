@@ -1,4 +1,5 @@
 ﻿using Hospital.Application.DTOs;
+using Hospital.Application.Exceptions;
 using Hospital.Application.Interfaces;
 using MediatR;
 using System;
@@ -21,7 +22,7 @@ namespace Hospital.Application.Features.Departments.Command
             var department = await _unitOfWork.Departments.GetByIdAsync(request.Id);
             if (department == null)
             {
-                throw new Exception("Department not found");
+                throw new NotFoundException("Department not found");
             }
             department.Name = request.Name;
             await _unitOfWork.Departments.UpdateAsync(department);

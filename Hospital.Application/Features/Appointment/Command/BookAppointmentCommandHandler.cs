@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Hospital.Application.DTOs;
+using Hospital.Application.Exceptions;
 using Hospital.Application.Interfaces;
 using Hospital.Domain.Entities;
 using MediatR;
@@ -31,12 +32,12 @@ namespace Hospital.Application.Features.Appointment.Command
             var doctor = await _unitOfWork.Doctors.GetByIdAsync(command.DoctorId);
             if (doctor == null)
             {
-                throw new Exception("Doctor not found");
+                throw new NotFoundException("Doctor not found");
             }
             var patient = await _unitOfWork.Patients.GetByIdAsync(command.PatientId);
             if (patient == null)
             {
-                throw new Exception("Patient not found");
+                throw new NotFoundException("Patient not found");
             }
 
             //if (currentUserRole != "Admin" && !(currentUserRole == "Patient" && patient.ApplicationUserId == currentUserId))

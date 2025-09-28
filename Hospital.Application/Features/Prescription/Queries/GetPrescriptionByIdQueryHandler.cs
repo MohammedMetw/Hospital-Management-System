@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Hospital.Application.DTOs;
+using Hospital.Application.Exceptions;
 using Hospital.Application.Interfaces;
 using MediatR;
 
@@ -21,7 +22,7 @@ namespace Hospital.Application.Features.Prescription.Queries
             var prescription = await _unitOfWork.Prescriptions.GetByIdAsync(request.PrescriptionId);
             if (prescription == null)
             {
-                throw new Exception("Prescription not found");
+                throw new NotFoundException("Prescription not found");
             }
             return new PrescriptionDto
             {

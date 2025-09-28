@@ -26,7 +26,7 @@ namespace Hospital.Application.Features.Doctor.Queries
 
             if (doctor == null) 
             {
-                throw new Exception("Doctor not found");
+                throw new NotFoundException("Doctor not found");
             }
             return new DoctorDto
             {

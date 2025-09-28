@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Hospital.Application.DTOs;
+using Hospital.Application.Exceptions;
 using Hospital.Application.Interfaces;
 using MediatR;
 
@@ -22,7 +23,7 @@ namespace Hospital.Application.Features.Patient.Queries
             var patient = await _unitofWork.Patients.GetPatientByName(request.FullName);
             if (patient == null)
             {
-                throw new Exception("Patient not found");
+                throw new NotFoundException("Patient not found");
             }
             return new PatientsDto
             {

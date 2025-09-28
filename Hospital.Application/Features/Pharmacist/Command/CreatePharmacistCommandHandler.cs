@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Hospital.Application.Exceptions;
 using Hospital.Application.Interfaces;
 using Hospital.Domain.Entities;
 using MediatR;
@@ -35,7 +36,7 @@ namespace Hospital.Application.Features.Pharmacist.Command
             var result = await _userManager.CreateAsync(user, request.Password);
             if (!result.Succeeded)
             {
-                throw new Exception("User creation failed");
+                throw new NotFoundException("User creation failed");
             }
             var newPharmacistProfile = new Domain.Entities.Pharmacist
             {

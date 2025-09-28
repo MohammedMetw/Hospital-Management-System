@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Hospital.Application.DTOs;
+using Hospital.Application.Exceptions;
 using Hospital.Application.Interfaces;
 using MediatR;
 
@@ -22,7 +23,7 @@ namespace Hospital.Application.Features.Appointment.Queries
             var appointment = await _unitOfWork.Appointments.GetByIdAsync(request.AppointmentId);
             if (appointment == null)
             {
-                throw new Exception("Appointment not found");
+                throw new NotFoundException("Appointment not found");
             }
             return new AppointmentDto
             {

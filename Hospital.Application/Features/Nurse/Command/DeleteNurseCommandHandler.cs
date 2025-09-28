@@ -8,6 +8,7 @@ using Hospital.Domain.Entities;
 using Hospital.Application.DTOs;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
+using Hospital.Application.Exceptions;
 
 namespace Hospital.Application.Features.Nurse.Command
 {
@@ -25,7 +26,7 @@ namespace Hospital.Application.Features.Nurse.Command
             var nurse = await _unitOfWork.Nurses.GetByIdAsync(request.Id);
             if (nurse == null)
             {
-                throw new Exception("Nurse not found");
+                throw new NotFoundException("Nurse not found");
             }
            await _unitOfWork.Nurses.DeleteAsync(nurse);
             await _userManager.RemoveFromRoleAsync(nurse.ApplicationUser, "Nurse");

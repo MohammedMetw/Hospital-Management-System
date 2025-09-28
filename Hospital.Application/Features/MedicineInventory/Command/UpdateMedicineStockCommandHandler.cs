@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Hospital.Application.DTOs;
+using Hospital.Application.Exceptions;
 using Hospital.Application.Interfaces;
 using Hospital.Domain.Entities;
 using MediatR;
@@ -22,7 +23,7 @@ namespace Hospital.Application.Features.MedicineInventory.Command
             var medicine = await _unitOfWork.Medicines.GetByIdAsync(request.MedicineId);
             if (medicine == null)
             {
-                throw new Exception("Medicine not found");
+                throw new NotFoundException("Medicine not found");
             }
 
             int newquantity = request.Quantity - medicine.Quantity;

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Hospital.Application.DTOs;
+using Hospital.Application.Exceptions;
 using Hospital.Application.Interfaces;
 using Hospital.Domain.Entities;
 using MediatR;
@@ -29,7 +30,7 @@ namespace Hospital.Application.Features.Accountant.Command
 
             if (accountant == null )
             {
-                throw new Exception("Accountant not Found");
+                throw new NotFoundException("Accountant not Found");
             }
 
             await _userManager.RemoveFromRoleAsync(accountant.ApplicationUser, "Accountant");
