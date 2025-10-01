@@ -10,5 +10,8 @@ namespace Hospital.Application.Interfaces
     public interface IAppointmentRepository : IGenericRepository<Appointment>
     {
         Task<IEnumerable<Appointment>> GetAppointmentsByPatientIdAsync(int patientId);
+        Task<IEnumerable<Appointment>> GetUpcomingAppointmentsWithinOneHourAsync();
+
+
     }
 }

@@ -10,7 +10,6 @@ namespace Hospital.Infrastructure.Services
     public class NotificationService : INotificationService
     {
         private readonly EmailSettings _emailSettings;
-
         public NotificationService(IOptions<EmailSettings> emailSettings)
         {
             _emailSettings = emailSettings.Value;
@@ -70,5 +69,32 @@ namespace Hospital.Infrastructure.Services
                 await smtp.SendMailAsync(mail);
             }
         }
+        public async Task SendreminderBeforeAppiontmentByHour(string email)
+        {
+            string message = "There exist an hour before yourAppointment";
+        
+            using (var smtp = new SmtpClient(_emailSettings.SmtpServer, _emailSettings.Port))
+            {
+                smtp.Credentials = new NetworkCredential(_emailSettings.SenderEmail, _emailSettings.Password);
+                smtp.EnableSsl = true;
+
+                var mail = new MailMessage
+                {
+                    From = new MailAddress(_emailSettings.SenderEmail, _emailSettings.SenderName),
+                    Subject = "[Appointment Reminder]",
+                    Body = message,
+                    IsBodyHtml = true 
+                };
+                mail.To.Add(email);
+
+                await smtp.SendMailAsync(mail);
+            }
+        }
+
+
+
+
+
     }
+
 }

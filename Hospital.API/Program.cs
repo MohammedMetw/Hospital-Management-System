@@ -7,6 +7,7 @@ using Hospital.Application.Common.Setting;
 using Hospital.Application.Features.Doctor.Command;
 using Hospital.Application.Interfaces;
 using Hospital.Domain.Entities;
+using Hospital.Infrastructure.BackgroundServices;
 using Hospital.Infrastructure.Persistence;
 using Hospital.Infrastructure.Repositories;
 using Hospital.Infrastructure.Services;
@@ -84,6 +85,8 @@ namespace Hospital.API
             builder.Services.AddScoped<IUserContextService, UserContextService>();
             builder.Services.AddScoped<IAIChatService, AIChatService>();
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+            builder.Services.AddHostedService<AppointmentReminderBackgroundService>();
+
 
 
             builder.Services.AddSingleton<IConnectionMultiplexer>(sp =>

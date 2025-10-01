@@ -6,20 +6,25 @@ using System.Net;
 using Microsoft.AspNetCore.Http;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
+using Hospital.Infrastructure.Repositories;
 
 
 public class EmailService : IEmailService
 {
    
     private readonly EmailSettings _emailSettings;
-    public EmailService(IOptions<EmailSettings> emailSettings)
+    private readonly IAppointmentRepository _appointmentRepository;
+    private readonly INotificationService _notificationService;
+    public EmailService(IOptions<EmailSettings> emailSettings, IAppointmentRepository appointmentRepository, INotificationService notificationService)
     {
         _emailSettings = emailSettings.Value;
+        _appointmentRepository = appointmentRepository;
+        _notificationService = notificationService;
     }
 
     public async Task SendConfirmationEmailAsync(string email, string userId, string token, string baseUrl)
     {
-      
+
         var encodedToken = UrlEncoder.Default.Encode(token);
         var confirmationLink = $"{baseUrl}/api/Account/confirm-email?userId={userId}&token={encodedToken}";
 
@@ -29,19 +34,37 @@ public class EmailService : IEmailService
             smtp.Credentials = new NetworkCredential(_emailSettings.SenderEmail, _emailSettings.Password);
             smtp.EnableSsl = true;
 
-           
+
             var mail = new MailMessage
             {
                 From = new MailAddress(_emailSettings.SenderEmail, _emailSettings.SenderName),
                 Subject = "Confirm your Hospital System Account",
                 Body = $"<p>Thank you for registering. Please confirm your email by clicking the link below:</p>" +
                        $"<a href='{confirmationLink}'>Confirm Email</a>",
-                IsBodyHtml = true 
+                IsBodyHtml = true
             };
             mail.To.Add(email);
 
-           
+
             await smtp.SendMailAsync(mail);
         }
     }
+    public async Task SendRemindersForUpcomingAppointmentsAsync()
+    {
+        var upcomingAppointments = await _appointmentRepository.GetUpcomingAppointmentsWithinOneHourAsync();
+
+        foreach (var appointment in upcomingAppointments)
+        {
+            var email = appointment.patient?.Email;
+
+            if (!string.IsNullOrEmpty(email))
+            {
+                string message = $"Reminder: You have an appointment on {appointment.Date:dd MMM yyyy} at {appointment.Date:HH:mm}.";
+
+                await _notificationService.SendreminderBeforeAppiontmentByHour(email);
+            }
+        }
+    }
+
+
 }

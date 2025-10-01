@@ -45,5 +45,20 @@ namespace Hospital.Infrastructure.Repositories
                                     .ThenInclude(d => d.ApplicationUser) 
                                  .FirstOrDefaultAsync(a => a.Id == id);
         }
+        public async Task<IEnumerable<Appointment>> GetUpcomingAppointmentsWithinOneHourAsync()
+        {
+            var now = DateTime.Now;
+            var oneHourLater = now.AddHours(1);
+
+            var result = await _context.Appointments
+                .Include(a => a.patient) 
+                .Include(a => a.doctor)  
+                .Where(a => a.Date > now && a.Date <= oneHourLater)
+                .ToListAsync();
+
+            return result;
+        }
+
+
     }
 }
