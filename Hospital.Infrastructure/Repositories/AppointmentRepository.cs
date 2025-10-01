@@ -58,6 +58,14 @@ namespace Hospital.Infrastructure.Repositories
 
             return result;
         }
+        public async Task <IEnumerable<Appointment>> GetPatientAppointmentsById(int id)
+        {
+            return await _context.Appointments
+         .Where(a => a.DoctorId == id)
+         .Include(a => a.patient) 
+             .ThenInclude(p => p.ApplicationUser).ToListAsync();
+
+        }
 
 
     }

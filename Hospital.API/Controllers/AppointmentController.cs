@@ -4,6 +4,8 @@ using MediatR;
 using Hospital.Application.Features.Appointment.Command;
 using Hospital.Application.Features.Appointment.Queries;
 using Microsoft.AspNetCore.Authorization;
+using Hospital.Application.Features.Doctor.Queries;
+
 
 namespace Hospital.API.Controllers
 {
@@ -49,6 +51,12 @@ namespace Hospital.API.Controllers
         public async Task<IActionResult> GetAppointmentById(int id)
         {
             var result = await _mediator.Send(new GetAppointmentByIdQuery { AppointmentId = id });
+            return Ok(result);
+        }
+        [HttpGet("GetAllpatientsforsepasificDoctor")]
+        public async Task<IActionResult> GetAppointmentPatientById( int id)
+        {
+            var result = await _mediator.Send(new GetPatientsByDoctorIdQuery { DoctorId = id });
             return Ok(result);
         }
 

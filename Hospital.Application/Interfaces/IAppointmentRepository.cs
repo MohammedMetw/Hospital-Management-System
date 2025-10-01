@@ -11,6 +11,7 @@ namespace Hospital.Application.Interfaces
     {
         Task<IEnumerable<Appointment>> GetAppointmentsByPatientIdAsync(int patientId);
         Task<IEnumerable<Appointment>> GetUpcomingAppointmentsWithinOneHourAsync();
+        Task<IEnumerable<Appointment>> GetPatientAppointmentsById(int id);
 
 
     }
