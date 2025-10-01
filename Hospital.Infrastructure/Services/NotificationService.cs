@@ -16,6 +16,34 @@ namespace Hospital.Infrastructure.Services
             _emailSettings = emailSettings.Value;
         }
 
+        public async Task ChangePasswordAlertAsync(string email)
+        {
+            using (var smtp = new SmtpClient(_emailSettings.SmtpServer, _emailSettings.Port))
+            {
+                smtp.Credentials = new NetworkCredential(_emailSettings.SenderEmail, _emailSettings.Password);
+                smtp.EnableSsl = true;
+
+                var mail = new MailMessage
+                {
+                    From = new MailAddress(_emailSettings.SenderEmail, _emailSettings.SenderName),
+                    Subject = "[PASSWORD CHANGED SUCCESSFULLY]",
+                    Body = $"<h1>Password Changed Successfully</h1>" +
+                           $"<p>Hello,</p>" +
+                           $"<p>This is to notify you that your account password has been <strong>changed successfully</strong>.</p>" +
+                           $"<p>If you made this change, no further action is required.</p>" +
+                           $"<p>If you did <strong>not</strong> request this change, please reset your password immediately and contact our support team.</p>" +
+                           $"<br/>" +
+                           $"<p>Thank you,</p>" +
+                           $"<p><em>Your Security Team</em></p>",
+
+                    IsBodyHtml = true
+                };
+                mail.To.Add(email);
+
+                await smtp.SendMailAsync(mail);
+            }
+        }
+
         public async Task SendLowStockAlertAsync(string medicineName, int currentQuantity)
         {
             

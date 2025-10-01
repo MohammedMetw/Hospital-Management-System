@@ -10,5 +10,6 @@ namespace Hospital.Application.Interfaces
     {
         
         Task SendLowStockAlertAsync(string medicineName, int currentQuantity);
+        Task ChangePasswordAlertAsync(string email);
     }
 }
