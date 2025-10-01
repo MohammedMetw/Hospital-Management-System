@@ -3,38 +3,34 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Hospital.Application.Interfaces;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using Microsoft.EntityFrameworkCore.Internal;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Hospital.Infrastructure.BackgroundServices
 {
     public class AppointmentReminderBackgroundService : BackgroundService
     {
-        private readonly IEmailService _emailService;
-        private readonly TimeSpan _interval = TimeSpan.FromMinutes(15);
+        private readonly IServiceProvider _serviceProvider;
+        private readonly TimeSpan _interval = TimeSpan.FromMinutes(1);
 
-        public AppointmentReminderBackgroundService(IEmailService emailService)
+        public AppointmentReminderBackgroundService(IServiceProvider serviceProvider)
         {
-            _emailService = emailService;
+            _serviceProvider = serviceProvider;
+            
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-           
             while (!stoppingToken.IsCancellationRequested)
             {
-                try
+                using (var scope = _serviceProvider.CreateScope())
                 {
-                    Console.WriteLine($"⏰ [Reminder Service] Running at {DateTime.Now}");
+                    var emailService = scope.ServiceProvider.GetRequiredService<IEmailService>();
 
-                    
-                    await _emailService.SendRemindersForUpcomingAppointmentsAsync();
+                    await emailService.SendRemindersForUpcomingAppointmentsAsync();
+                    Console.WriteLine("------------------------------------------Remidner Sent ------------------------------------------------");
                 }
-                catch (Exception ex)
-                {
-                    
-                    Console.WriteLine($"❌ Error sending reminders: {ex.Message}");
-                }
-
-                
                 await Task.Delay(_interval, stoppingToken);
             }
         }

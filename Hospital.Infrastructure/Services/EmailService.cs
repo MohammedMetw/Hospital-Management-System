@@ -59,8 +59,6 @@ public class EmailService : IEmailService
 
             if (!string.IsNullOrEmpty(email))
             {
-                string message = $"Reminder: You have an appointment on {appointment.Date:dd MMM yyyy} at {appointment.Date:HH:mm}.";
-
                 await _notificationService.SendreminderBeforeAppiontmentByHour(email);
             }
         }

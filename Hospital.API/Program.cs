@@ -7,10 +7,9 @@ using Hospital.Application.Common.Setting;
 using Hospital.Application.Features.Doctor.Command;
 using Hospital.Application.Interfaces;
 using Hospital.Domain.Entities;
-using Hospital.Infrastructure.BackgroundServices;
+using Hospital.Infrastructure.Services;
 using Hospital.Infrastructure.Persistence;
 using Hospital.Infrastructure.Repositories;
-using Hospital.Infrastructure.Services;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -18,6 +17,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using StackExchange.Redis;
+using Hospital.Infrastructure.BackgroundServices;
+
 
 namespace Hospital.API
 {
