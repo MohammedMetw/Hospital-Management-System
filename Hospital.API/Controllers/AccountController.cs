@@ -6,6 +6,11 @@ using Hospital.Domain.Entities;
 using Microsoft.Data.SqlClient;
 using Hospital.Application.Features.Login.Command;
 using Hospital.Application.Features.Register.Command;
+using Hospital.Application.Interfaces;
+using Hospital.Application.DTOs;
+using Hospital.Application.Features.ChangePassword;
+using Hospital.Application.Features.Logout;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Hospital.API.Controllers
 {
@@ -14,9 +19,11 @@ namespace Hospital.API.Controllers
     public class AccountController : ControllerBase
     {
         private readonly IMediator _mediator;
+       
         public AccountController(IMediator mediator)
         {
             _mediator = mediator;
+            
 
         }
 
@@ -45,6 +52,21 @@ namespace Hospital.API.Controllers
             }
             return BadRequest("Email could not be confirmed.");
         }
+        [HttpPost("change-password")]
+        public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordCommand command)
+        {
+            
+            var result = await _mediator.Send(command);
+            return Ok(result);
+        }
+        [HttpPost("logout")]
+        [Authorize]
+        public async Task<IActionResult> Logout()
+        {
+            await _mediator.Send(new LogoutCommand());
+            return Ok("Successfully logged out.");
+        }
+
 
 
 

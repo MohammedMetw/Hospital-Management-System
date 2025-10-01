@@ -18,7 +18,7 @@ public class UserContextService : IUserContextService
 
     public ClaimsPrincipal? GetUser() => _httpContextAccessor.HttpContext?.User;
 
-    public string? GetUserId() => GetUser()?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+    public String? GetUserId() => GetUser()?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
     public string? GetUserRole() => GetUser()?.FindFirst(ClaimTypes.Role)?.Value;
 }

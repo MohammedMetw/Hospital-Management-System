@@ -19,7 +19,7 @@ namespace Hospital.Infrastructure.Services
         public async Task SendLowStockAlertAsync(string medicineName, int currentQuantity)
         {
             
-            var managerEmail = "mohammed.metw@gmail.com";
+            var managerEmail = "esraabakkar959@gmail.com";
 
             using (var smtp = new SmtpClient(_emailSettings.SmtpServer, _emailSettings.Port))
             {

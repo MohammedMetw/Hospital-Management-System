@@ -16,6 +16,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using StackExchange.Redis;
 
 namespace Hospital.API
 {
@@ -83,7 +84,13 @@ namespace Hospital.API
             builder.Services.AddScoped<IUserContextService, UserContextService>();
             builder.Services.AddScoped<IAIChatService, AIChatService>();
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-            
+
+
+            builder.Services.AddSingleton<IConnectionMultiplexer>(sp =>
+ConnectionMultiplexer.Connect(builder.Configuration.GetConnectionString("Redis")));
+            builder.Services.AddScoped<ICacheService, CacheService>();
+
+
 
             // --- JWT Authentication ---
             builder.Services.AddAuthentication(options =>
@@ -178,6 +185,7 @@ namespace Hospital.API
             // app.UseMiddleware<GlobalErrorHandlingMiddleware>();
 
             app.UseAuthentication();
+            app.UseMiddleware<TokenBlacklistMiddleware>();
             app.UseAuthorization();
 
             app.MapControllers();

@@ -53,7 +53,7 @@ namespace Hospital.Application.Features.Register.Command
                 FirstName = firstName,
                 LastName = lastName
             };
-
+            // محمد هيبقي يعدلها 
             var result = await _userManager.CreateAsync(user, command.Password);
             if (!result.Succeeded)
             {
