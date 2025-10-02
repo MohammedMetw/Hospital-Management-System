@@ -13,12 +13,11 @@ The API covers a wide range of hospital operations, from user management and app
 
 * **Role-Based Security:** Complete JWT-based authentication and authorization system for different user roles (Admin, Doctor, Patient, etc.).
 * **Full User Management:** User registration with email confirmation, login, change password, and admin-level user/role management.
-* **Appointment & Prescription System:** A complete workflow for booking appointments, which links doctors and patients, and allows doctors to issue prescriptions with multiple medications.
+* **🗓️ Advanced Appointment & Prescription System:** A complete workflow for booking, managing, and cancelling appointments. The system features an automated **recurring background job (Hangfire)** that checks every 15 minutes for upcoming appointments and sends email reminders to patients one hour beforehand to reduce no-shows.
 * **Transactional Pharmacy Module:**
     * A robust medicine inventory system.
     * A complete audit trail for every stock change (`StockAdjustment`) and sale (`DispenseLog`).
     * Smart business logic for dispensing prescriptions (FEFO principle).
-* **Nursing Module:** Functionality for nurses to record patient vital signs and nursing notes.
 * **AI-Powered Chatbot:** An integrated chatbot (using a provider like OpenRouter) to provide patients with initial medical triage suggestions.
 * **Asynchronous Background Jobs:** Utilizes Hangfire for reliable, "fire-and-forget" and scheduled tasks like:
     * Sending registration and reminder emails.
@@ -28,7 +27,8 @@ The API covers a wide range of hospital operations, from user management and app
     * Global error handling middleware for consistent error responses.
     * FluentValidation for all incoming requests, integrated via a MediatR pipeline.
     * Secure server-side logout using token blacklisting (with Redis or In-Memory Cache).
-
+* **📝 Structured Logging:** Implemented **Serilog** for structured, production-ready logging to files and the console, providing a trail and easy debugging.
+  
 ## 🏗️ Architectural Overview
 
 This project is a practical implementation of **Clean Architecture**, emphasizing a clear separation of concerns and the Dependency Rule.
@@ -68,6 +68,7 @@ This project is a practical implementation of **Clean Architecture**, emphasizin
 * **Background Jobs:** Hangfire
 * **Caching:** StackExchange.Redis / IMemoryCache
 * **AI Integration:** Azure.AI.OpenAI (for OpenAI-compatible APIs like OpenRouter)
+* **Logging:** Serilog
 
 ## 🏁 Getting Started
 
