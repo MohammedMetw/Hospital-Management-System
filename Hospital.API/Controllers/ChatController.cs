@@ -3,6 +3,12 @@ using Microsoft.AspNetCore.Mvc;
 using Hospital.Application.Features.Chat.Commands;
 using System.Threading.Tasks;
 
+//---------------------------Note--------------------------------------
+//                      --------------
+// API Key in appsetting.json need to intialze before use (from OpenRouter.ai)
+//                      --------------
+//---------------------------------------------------------------------
+
 namespace Hospital.API.Controllers
 {
     [Route("api/[controller]")]

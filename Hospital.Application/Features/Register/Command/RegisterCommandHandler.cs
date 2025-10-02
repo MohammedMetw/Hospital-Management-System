@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Identity;
 using Hangfire;
 using System.Text.Encodings.Web;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
+using Hospital.Application.Exceptions;
 
 namespace Hospital.Application.Features.Register.Command
 {
@@ -15,18 +17,21 @@ namespace Hospital.Application.Features.Register.Command
         private readonly IBackgroundJobClient _backgroundJobClient;
         private readonly IEmailService _emailService;
         private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly ILogger<RegisterCommandHandler> _logger;
 
 
 
         public RegisterCommandHandler(
          UserManager<ApplicationUser> userManager,
          IBackgroundJobClient backgroundJobClient,
-         IEmailService emailService, IHttpContextAccessor httpContextAccessor)
+         IEmailService emailService, IHttpContextAccessor httpContextAccessor,
+         ILogger<RegisterCommandHandler> logger)
         {
             _userManager = userManager;
             _backgroundJobClient = backgroundJobClient;
             _emailService = emailService;
             _httpContextAccessor = httpContextAccessor;
+            _logger = logger;
         }
 
 
@@ -53,12 +58,13 @@ namespace Hospital.Application.Features.Register.Command
                 FirstName = firstName,
                 LastName = lastName
             };
-            // محمد هيبقي يعدلها 
+           
             var result = await _userManager.CreateAsync(user, command.Password);
             if (!result.Succeeded)
             {
                 var errors = string.Join("; ", result.Errors.Select(e => e.Description));
-                throw new ApplicationException($"Registration failed: {errors}");
+                _logger.LogError($"Registration failed: {errors}");
+                throw new NotFoundException($"Registration failed: {errors}");
             }
 
             await _userManager.AddToRoleAsync(user, "Patient");
@@ -70,7 +76,7 @@ namespace Hospital.Application.Features.Register.Command
 
             //  URL HERE 
             var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-            // عاوز اتاكد هل دا ضد الكلين اركيتشر ولا اي؟
+           
             var request = _httpContextAccessor.HttpContext.Request;
             var baseUrl = $"{request.Scheme}://{request.Host}";
 

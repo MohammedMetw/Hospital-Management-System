@@ -6,6 +6,13 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
+
+//---------------------------Note--------------------------------------
+//                      --------------
+// API Key in appsetting.json need to intialze before use (from OpenRouter.ai)
+//                      --------------
+//---------------------------------------------------------------------
+
 namespace Hospital.Infrastructure.Services
 {
     public class AIChatService : IAIChatService
@@ -17,7 +24,7 @@ namespace Hospital.Infrastructure.Services
         public AIChatService(IConfiguration configuration, HttpClient httpClient)
         {
             _httpClient = httpClient;
-            _apiKey = configuration["AiSettings:OpenRouterApiKey"];
+            _apiKey = configuration["AiSettings:OpenRouterApiKey"]; 
             _model = configuration["AiSettings:Model"] ?? "meta-llama/llama-3-8b-instruct";
 
             if (string.IsNullOrEmpty(_apiKey))

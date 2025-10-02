@@ -12,7 +12,7 @@ namespace Hospital.Infrastructure.BackgroundServices
     public class AppointmentReminderBackgroundService : BackgroundService
     {
         private readonly IServiceProvider _serviceProvider;
-        private readonly TimeSpan _interval = TimeSpan.FromMinutes(1);
+        private readonly TimeSpan _interval = TimeSpan.FromMinutes(15);
 
         public AppointmentReminderBackgroundService(IServiceProvider serviceProvider)
         {
@@ -29,7 +29,7 @@ namespace Hospital.Infrastructure.BackgroundServices
                     var emailService = scope.ServiceProvider.GetRequiredService<IEmailService>();
 
                     await emailService.SendRemindersForUpcomingAppointmentsAsync();
-                    Console.WriteLine("------------------------------------------Remidner Sent ------------------------------------------------");
+                   
                 }
                 await Task.Delay(_interval, stoppingToken);
             }

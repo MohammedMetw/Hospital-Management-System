@@ -1,7 +1,11 @@
 ﻿using MediatR;
 using Hospital.Application.Interfaces;
 
-
+//---------------------------Note--------------------------------------
+//                      --------------
+// API Key in appsetting.json need to intialze before use (from OpenRouter.ai)
+//                      --------------
+//---------------------------------------------------------------------
 
 namespace Hospital.Application.Features.Chat.Commands
 {

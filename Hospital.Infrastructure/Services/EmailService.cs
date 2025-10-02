@@ -15,11 +15,13 @@ public class EmailService : IEmailService
     private readonly EmailSettings _emailSettings;
     private readonly IAppointmentRepository _appointmentRepository;
     private readonly INotificationService _notificationService;
-    public EmailService(IOptions<EmailSettings> emailSettings, IAppointmentRepository appointmentRepository, INotificationService notificationService)
+    private readonly IHttpContextAccessor _httpContextAccessor;
+    public EmailService(IHttpContextAccessor httpContextAccessor,IOptions<EmailSettings> emailSettings, IAppointmentRepository appointmentRepository, INotificationService notificationService)
     {
         _emailSettings = emailSettings.Value;
         _appointmentRepository = appointmentRepository;
         _notificationService = notificationService;
+        _httpContextAccessor = httpContextAccessor;
     }
 
     public async Task SendConfirmationEmailAsync(string email, string userId, string token, string baseUrl)

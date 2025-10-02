@@ -8,10 +8,12 @@ namespace Hospital.API.Middleware
     public class GlobalErrorHandlingMiddleware
     {
         private readonly RequestDelegate _next;
+        private readonly ILogger<GlobalErrorHandlingMiddleware> _logger;
 
-        public GlobalErrorHandlingMiddleware(RequestDelegate next)
+        public GlobalErrorHandlingMiddleware(RequestDelegate next, ILogger<GlobalErrorHandlingMiddleware> logger)
         {
             _next = next;
+            _logger = logger;
         }
 
         public async Task Invoke(HttpContext context)
@@ -26,7 +28,7 @@ namespace Hospital.API.Middleware
             }
         }
 
-        private static Task HandleExceptionAsync(HttpContext context, Exception exception)
+        private  Task HandleExceptionAsync(HttpContext context, Exception exception)
         {
             HttpStatusCode statusCode;
             object response;
@@ -44,6 +46,7 @@ namespace Hospital.API.Middleware
                     break;
 
                 default:
+                    _logger.LogError(exception, "An unhandled exception has occurred.");
                     statusCode = HttpStatusCode.InternalServerError; // 500
                     response = new { error = "An unexpected error occurred. Please try again later." };
                     break;

@@ -8,9 +8,9 @@ using Hospital.Application.Features.Login.Command;
 using Hospital.Application.Features.Register.Command;
 using Hospital.Application.Interfaces;
 using Hospital.Application.DTOs;
-using Hospital.Application.Features.ChangePassword;
 using Hospital.Application.Features.Logout;
 using Microsoft.AspNetCore.Authorization;
+using Hospital.Application.Features.ChangePassword.Command;
 
 namespace Hospital.API.Controllers
 {
@@ -52,6 +52,8 @@ namespace Hospital.API.Controllers
             }
             return BadRequest("Email could not be confirmed.");
         }
+
+
         [HttpPost("change-password")]
         public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordCommand command)
         {
@@ -59,6 +61,9 @@ namespace Hospital.API.Controllers
             var result = await _mediator.Send(command);
             return Ok(result);
         }
+
+
+
         [HttpPost("logout")]
         [Authorize]
         public async Task<IActionResult> Logout()
